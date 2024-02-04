@@ -1,9 +1,9 @@
 # Paradox-Platform
-[paradox library] standard headers, code, and files for paradox libraries and software
+Standard headers, code, and files for paradox libraries and software
 
 # Prerequisites
-- C compiler that supports >=C23 standard.
-- C++ compiler that supports >=C++20 standard.
+- C compiler that supports >=C11 standard.
+- C++ compiler that supports >=C++11 standard.
 
 # Building & Running Tests
 To check if the header files are supported on your system.
