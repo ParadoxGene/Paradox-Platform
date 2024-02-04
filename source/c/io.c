@@ -6,5 +6,5 @@ const errno_t paradox_bin_dir_fopen(
     const char *restrict filename,
     const char *restrict mode)
 {
-
+    return 1;
 }
