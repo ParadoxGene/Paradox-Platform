@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.14)
+project(Paradox-Platform)
+
+if(UNIX AND NOT APPLE)
+    set(LINUX TRUE)
+endif()
+
+if(APPLE)
+    add_subdirectory(source/swift swift_framework)
+elseif(LINUX)
+    add_subdirectory(source/c c_framework)
+    add_subdirectory(source/c++ c++_framework)
+elseif(WIN32)
+    add_subdirectory(source/c c_framework)
+    add_subdirectory(source/c++ c++_framework)
+endif()
