@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 FILE* paradox_bin_dir_fopen(
-    const char* restrict filename,
-    const char* restrict mode);
+    const char* filename,
+    const char* mode);
     
 #endif

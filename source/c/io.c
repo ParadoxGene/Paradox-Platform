@@ -1,33 +1,45 @@
 #include <paradox-platform/io.h>
 
-
 #if _WIN32
     #include <windows.h>
-    #include <ctype.h>
 #elif __linux__
     #include <unistd.h>
     #include <libgen.h>
     #include <linux/limits.h>
+    #include <stdlib.h>
+    #include <string.h>
 #endif
 
-#include <stdlib.h>
-#include <string.h>
-
 FILE* paradox_bin_dir_fopen(
-    const char* restrict filename,
-    const char* restrict mode)
+    const char* filename,
+    const char* mode)
 {
     if(filename == NULL) return NULL;
 
     switch(filename[0])
     {
     case '/':
-    case '\\': return fopen(filename, mode);
-    
+    case '\\':
+    {
+#if _WIN32
+        FILE* file;
+        fopen_s(&file, filename, mode);
+        return file;
+#elif __linux__
+        return fopen(filename, mode);
+#else
+    #error Unsupported Compiler and/or Platform.
+#endif
+    }
     default:
     {
 #if _WIN32
-    if(isalpha(filename[0]) && filename[1] == ':') return fopen(filename, mode);
+    if(isalpha(filename[0]) && filename[1] == ':')
+    {
+        FILE* file;
+        fopen_s(&file, filename, mode);
+        return file;
+    }
 
     LPSTR program_file_buf;
     _get_pgmptr(&program_file_buf);
@@ -44,7 +56,8 @@ FILE* paradox_bin_dir_fopen(
     strcpy_s(rel_file_buf + (_MAX_DRIVE - 1) + program_dir_buf_sz, file_buf_sz + 1, filename);
     rel_file_buf[(_MAX_DRIVE - 1) + program_dir_buf_sz + file_buf_sz] = '\0';
     
-    FILE* file = fopen(rel_file_buf, mode);
+    FILE* file;
+    fopen_s(&file, rel_file_buf, mode);
     free(rel_file_buf);
     return file;
 #elif __linux__
