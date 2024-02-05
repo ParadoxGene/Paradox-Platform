@@ -25,6 +25,7 @@ typedef float		  paradox_float32_t;
 typedef double		  paradox_float64_t;
 typedef long double	  paradox_float_max_t;
 typedef unsigned char paradox_byte_t;
+typedef int           paradox_errno_t;
 
 _Static_assert(sizeof(paradox_bool8_t) == 1, "paradox_bool8_t expected size of 1 byte.");
 _Static_assert(sizeof(paradox_char8_t) == 1, "paradox_char8_t expected size of 1 byte.");
