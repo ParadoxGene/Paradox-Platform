@@ -14,22 +14,22 @@ include(${PROJECT_DIR}/cmake/unity.cmake)
 add_subdirectory(${PROJECT_DIR}/modules/Unity unity)
 
 add_executable(
-    c_unit_testing
+    c_unit_tests
     ${PROJECT_DIR}/tests/c/unit_testing.c
 )
 
 target_include_directories(
-    c_unit_testing PRIVATE
+    c_unit_tests PRIVATE
     ${PROJECT_DIR}/source/c/include
 )
 
 target_link_libraries(
-    c_unit_testing PRIVATE
+    c_unit_tests PRIVATE
     paradox-platform
     unity::framework
 )
 
 target_link_directories(
-    c_unit_testing PRIVATE
+    c_unit_tests PRIVATE
     ${PROJECT_DIR}/build/paradox-platform/c_framework/Debug
 )
