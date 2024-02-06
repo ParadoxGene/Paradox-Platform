@@ -4,8 +4,10 @@
 #include <inttypes.h>
 #include <uchar.h>
 #include <wchar.h>
+#include <string>
 
-namespace Paradox { namespace DataType {
+namespace Paradox::DataType
+{
     typedef bool		  B8;
 	typedef char		  C8;
 	typedef unsigned char UC8;
@@ -14,6 +16,7 @@ namespace Paradox { namespace DataType {
 	typedef wchar_t		  WC_t;
 	typedef char*		  Str_t;
 	typedef const char*	  CStr_t;
+	typedef std::string   String_t;
 	typedef int8_t		  I8;
 	typedef int16_t		  I16;
 	typedef int32_t		  I32;
@@ -44,6 +47,6 @@ namespace Paradox { namespace DataType {
 	static_assert(sizeof(F64) == 8, "F64 expected size of 8 bytes.");
 	static_assert(sizeof(FMax_t) >= sizeof(F64), "FMax_t expected size of at least 8 bytes.");
 	static_assert(sizeof(Byte_t) == 1, "Byte_t expected size of 1 byte.");
-}}
+}
 
 #endif
