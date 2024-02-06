@@ -10,11 +10,17 @@
     #include <string.h>
 #endif
 
-const paradox_cstr_t paradox_program_file_path(void)
+paradox_cstr_t paradox_program_file_path(void)
 {
     static paradox_bool8_t init = 0;
 #if _WIN32 & _MSC_VER
-
+    static LPSTR path = NULL;
+    if(!init)
+    {
+        init = 1;
+        _get_pgmptr(&path);
+    }
+    return path;
 #elif __linux__ & __GNUC__
     static char path[PATH_MAX];
     if(!init)
@@ -27,19 +33,33 @@ const paradox_cstr_t paradox_program_file_path(void)
     return NULL;
 }
 
-const paradox_cstr_t paradox_program_dir_path(void)
+paradox_cstr_t paradox_program_dir_path(void)
 {
-        static paradox_bool8_t init = 0;
+    static paradox_bool8_t init = 0;
 #if _WIN32 & _MSC_VER
+    static LPSTR dir = NULL;
+    if(!init)
+    {
+        init = 1;
+        LPCSTR path = paradox_program_file_path();
 
+        CHAR program_drive_buf[_MAX_DRIVE];
+        CHAR program_dir_buf[_MAX_DIR];
+        _splitpath_s(path, program_drive_buf, _MAX_DRIVE, program_dir_buf, _MAX_DIR, NULL, 0, NULL, 0);
+        const size_t program_dir_buf_sz = strlen(program_dir_buf);
+
+        dir = malloc(((_MAX_DRIVE - 1) + program_dir_buf_sz + 1) * sizeof(CHAR));
+        strcpy_s(dir, _MAX_DRIVE, program_drive_buf);
+        strcpy_s(dir + (_MAX_DRIVE - 1),  program_dir_buf_sz + 1, program_dir_buf);
+        dir[(_MAX_DRIVE - 1) + program_dir_buf_sz] = '\0';
+    }
+    return dir;
 #elif __linux__ & __GNUC__
-    static char path[PATH_MAX];
     static char* dir = NULL;
     if(!init)
     {
         init = 1;
-        readlink("/proc/self/exe", path, PATH_MAX);
-        dir = dirname(path);
+        dir = dirname(paradox_program_file_path());
     }
     return dir;
 #endif
@@ -47,8 +67,8 @@ const paradox_cstr_t paradox_program_dir_path(void)
 }
 
 FILE* paradox_bin_dir_fopen(
-    const char* filename,
-    const char* mode)
+    paradox_cstr_t filename,
+    paradox_cstr_t mode)
 {
     if(filename == NULL) return NULL;
 
@@ -75,20 +95,13 @@ FILE* paradox_bin_dir_fopen(
         return file;
     }
 
-    LPSTR program_file_buf;
-    _get_pgmptr(&program_file_buf);
-
-    CHAR program_drive_buf[_MAX_DRIVE];
-    CHAR program_dir_buf[_MAX_DIR];
-    _splitpath_s(program_file_buf, program_drive_buf, _MAX_DRIVE, program_dir_buf, _MAX_DIR, NULL, 0, NULL, 0);
-    const size_t program_dir_buf_sz = strlen(program_dir_buf);
+    const size_t program_dir_buf_sz = strlen(paradox_program_dir_path());
     const size_t file_buf_sz = strlen(filename);
 
-    CHAR* rel_file_buf = malloc(((_MAX_DRIVE - 1) + program_dir_buf_sz + file_buf_sz + 1) * sizeof(CHAR));
-    strcpy_s(rel_file_buf, _MAX_DRIVE, program_drive_buf);
-    strcpy_s(rel_file_buf + (_MAX_DRIVE - 1),  program_dir_buf_sz + 1, program_dir_buf);
-    strcpy_s(rel_file_buf + (_MAX_DRIVE - 1) + program_dir_buf_sz, file_buf_sz + 1, filename);
-    rel_file_buf[(_MAX_DRIVE - 1) + program_dir_buf_sz + file_buf_sz] = '\0';
+    LPSTR rel_file_buf = malloc((program_dir_buf_sz + file_buf_sz + 1) * sizeof(CHAR));
+    strcpy_s(rel_file_buf,  program_dir_buf_sz + 1, paradox_program_dir_path());
+    strcpy_s(rel_file_buf + program_dir_buf_sz, file_buf_sz + 1, filename);
+    rel_file_buf[program_dir_buf_sz + file_buf_sz] = '\0';
     
     FILE* file;
     fopen_s(&file, rel_file_buf, mode);
