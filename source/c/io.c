@@ -1,8 +1,8 @@
 #include <paradox-platform/io.h>
 
-#if _WIN32
+#if _WIN32 & _MSC_VER
     #include <windows.h>
-#elif __linux__
+#elif __linux__ & __GNUC__
     #include <unistd.h>
     #include <libgen.h>
     #include <linux/limits.h>
@@ -21,19 +21,17 @@ FILE* paradox_bin_dir_fopen(
     case '/':
     case '\\':
     {
-#if _WIN32
+#if _WIN32 & _MSC_VER
         FILE* file;
         fopen_s(&file, filename, mode);
         return file;
-#elif __linux__
+#elif __linux__ & __GNUC__
         return fopen(filename, mode);
-#else
-    #error Unsupported Compiler and/or Platform.
 #endif
     }
     default:
     {
-#if _WIN32
+#if _WIN32 & _MSC_VER
     if(isalpha(filename[0]) && filename[1] == ':')
     {
         FILE* file;
@@ -60,7 +58,7 @@ FILE* paradox_bin_dir_fopen(
     fopen_s(&file, rel_file_buf, mode);
     free(rel_file_buf);
     return file;
-#elif __linux__
+#elif __linux__ & __GNUC__
     char program_file_buf[PATH_MAX];
     readlink("/proc/self/exe", program_file_buf, PATH_MAX);
 
@@ -76,8 +74,6 @@ FILE* paradox_bin_dir_fopen(
     FILE* file = fopen(rel_file_buf, mode);
     free(rel_file_buf);
     return file;
-#else
-    #error Unsupported Compiler and/or Platform.
 #endif
     break;
     }
