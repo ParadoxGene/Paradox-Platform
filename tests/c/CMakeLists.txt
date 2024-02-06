@@ -20,7 +20,7 @@ add_executable(
 
 target_include_directories(
     c_unit_tests PRIVATE
-    ${PROJECT_DIR}/source/c/include
+    ${PROJECT_DIR}/api/c/include
 )
 
 target_link_libraries(

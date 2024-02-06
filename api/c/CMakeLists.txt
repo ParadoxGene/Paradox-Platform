@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.14)
-project(Paradox-Platform-C-Framework C)
+project(paradox-platform-c-framework C)
+
+set(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 if(LINUX)
-    set(CMAKE_C_STANDARD 11)
-    set(CMAKE_C_STANDARD_REQUIRED ON)
     set(CMAKE_C_EXTENSIONS ON)
-elseif(WIN32)
-    set(CMAKE_C_STANDARD 11)
-    set(CMAKE_C_STANDARD_REQUIRED ON)
 endif()
 
 file(GLOB_RECURSE C_SRC **.c)
