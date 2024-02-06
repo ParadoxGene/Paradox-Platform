@@ -6,8 +6,7 @@
 #include <wchar.h>
 #include <string>
 
-namespace Paradox::DataType
-{
+namespace Paradox { namespace DataType {
     typedef bool		  B8;
 	typedef char		  C8;
 	typedef unsigned char UC8;
@@ -47,6 +46,6 @@ namespace Paradox::DataType
 	static_assert(sizeof(F64) == 8, "F64 expected size of 8 bytes.");
 	static_assert(sizeof(FMax_t) >= sizeof(F64), "FMax_t expected size of at least 8 bytes.");
 	static_assert(sizeof(Byte_t) == 1, "Byte_t expected size of 1 byte.");
-}
+}}
 
 #endif

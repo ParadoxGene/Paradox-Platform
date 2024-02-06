@@ -10,8 +10,7 @@
     #include <string.h>
 #endif
 
-namespace Paradox::IO
-{
+namespace Paradox { namespace IO {
     const DataType::String_t& ProgramFilePath()
     {
         static DataType::B8 init = false;
@@ -70,4 +69,4 @@ namespace Paradox::IO
     {
         filestream.open(DataType::String_t(ProgramDirPath()) + filename, mode);
     }
-}
+}}

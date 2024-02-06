@@ -4,8 +4,7 @@
 #include <paradox-platform/defines.hpp>
 #include <fstream>
 
-namespace Paradox::IO
-{
+namespace Paradox { namespace IO {
     const DataType::String_t& ProgramFilePath();
     const DataType::String_t& ProgramDirPath();
 
@@ -21,6 +20,6 @@ namespace Paradox::IO
         std::ofstream& filestream,
         const DataType::String_t& filename,
         std::ios_base::openmode mode = std::ios_base::in);
-}
+}}
 
 #endif
