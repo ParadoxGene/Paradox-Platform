@@ -10,6 +10,42 @@
     #include <string.h>
 #endif
 
+const paradox_cstr_t paradox_program_file_path(void)
+{
+    static paradox_bool8_t init = 0;
+#if _WIN32 & _MSC_VER
+
+#elif __linux__ & __GNUC__
+    static char path[PATH_MAX];
+    if(!init)
+    {
+        init = 1;
+        readlink("/proc/self/exe", path, PATH_MAX);
+    }
+    return path;
+#endif
+    return NULL;
+}
+
+const paradox_cstr_t paradox_program_dir_path(void)
+{
+        static paradox_bool8_t init = 0;
+#if _WIN32 & _MSC_VER
+
+#elif __linux__ & __GNUC__
+    static char path[PATH_MAX];
+    static char* dir = NULL;
+    if(!init)
+    {
+        init = 1;
+        readlink("/proc/self/exe", path, PATH_MAX);
+        dir = dirname(path);
+    }
+    return dir;
+#endif
+    return NULL;
+}
+
 FILE* paradox_bin_dir_fopen(
     const char* filename,
     const char* mode)
@@ -59,15 +95,11 @@ FILE* paradox_bin_dir_fopen(
     free(rel_file_buf);
     return file;
 #elif __linux__ & __GNUC__
-    char program_file_buf[PATH_MAX];
-    readlink("/proc/self/exe", program_file_buf, PATH_MAX);
-
-    const char* program_dir_buf = dirname(program_file_buf);
-    const size_t program_dir_buf_sz = strlen(program_dir_buf);
+    const size_t program_dir_buf_sz = strlen(paradox_program_dir_path());
     const size_t file_buf_sz = strlen(filename);
 
     char* rel_file_buf = malloc((program_dir_buf_sz + 1 + file_buf_sz + 1) * sizeof(char));
-    strcpy(rel_file_buf, program_dir_buf);
+    strcpy(rel_file_buf, paradox_program_dir_path());
     rel_file_buf[program_dir_buf_sz] = '/';
     strcpy(rel_file_buf + program_dir_buf_sz + 1, filename);
 
