@@ -5,18 +5,18 @@
 #include <fstream>
 
 namespace Paradox { namespace IO {
-    const DataType::String_t& ProgramFilePath();
-    const DataType::String_t& ProgramDirPath();
+    PARADOX_PLATFORM_API const DataType::String_t& ProgramFilePath();
+    PARADOX_PLATFORM_API const DataType::String_t& ProgramDirPath();
 
-    void OpenBinDirFile(
+    PARADOX_PLATFORM_API void OpenBinDirFile(
         std::fstream& filestream,
         const DataType::String_t& filename,
         std::ios_base::openmode mode = std::ios_base::in);
-    void OpenBinDirFile(
+    PARADOX_PLATFORM_API void OpenBinDirFile(
         std::ifstream& filestream,
         const DataType::String_t& filename,
         std::ios_base::openmode mode = std::ios_base::in);
-    void OpenBinDirFile(
+    PARADOX_PLATFORM_API void OpenBinDirFile(
         std::ofstream& filestream,
         const DataType::String_t& filename,
         std::ios_base::openmode mode = std::ios_base::in);

@@ -5,6 +5,29 @@
 #include <uchar.h>
 #include <wchar.h>
 
+#ifdef _MSC_VER
+    // Microsoft C/C++
+    #define PARADOX_EXPORT __declspec(dllexport)
+    #define PARADOX_IMPORT __declspec(dllimport)
+#elif __GNUC__
+    // GCC C/C++
+    #define PARADOX_EXPORT __attribute__((visibility("default")))
+    #define PARADOX_IMPORT
+#else
+    //  Unrecognized Compiler
+    #define PARADOX_EXPORT
+    #define PARADOX_IMPORT
+    #pragma warning Unknown dynamic link import/export semantics.
+#endif
+
+#ifdef PARADOX_PLATFORM_STATIC
+    #define PARADOX_PLATFORM_API
+#elif PARADOX_PLATFORM_BUILD_DLL
+    #define PARADOX_PLATFORM_API PARADOX_EXPORT
+#else
+    #define PARADOX_PLATFORM_API PARADOX_IMPORT
+#endif
+
 typedef _Bool		  paradox_bool8_t;
 typedef char		  paradox_char8_t;
 typedef unsigned char paradox_uchar8_t;

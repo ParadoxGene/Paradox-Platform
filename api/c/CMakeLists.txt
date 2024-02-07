@@ -13,11 +13,23 @@ endif()
 file(GLOB_RECURSE C_SRC **.c)
 
 add_library(
-    paradox-platform
-    ${C_SRC}
-)
+    paradox-platform SHARED
+    ${C_SRC})
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(
+        paradox-platform PRIVATE
+        -Werror)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(
+        paradox-platform PRIVATE
+        /WX)
+endif()
+
+target_compile_definitions(
+    paradox-platform PRIVATE    
+    PARADOX_PLATFORM_BUILD_DLL)
 
 target_include_directories(
     paradox-platform PUBLIC
-    ./include
-)
+    ./include)

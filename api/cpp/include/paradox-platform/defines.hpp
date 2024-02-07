@@ -6,6 +6,29 @@
 #include <wchar.h>
 #include <string>
 
+#ifdef _MSC_VER
+    // Microsoft C/C++
+    #define PARADOX_EXPORT __declspec(dllexport)
+    #define PARADOX_IMPORT __declspec(dllimport)
+#elif __GNUC__
+    // GCC C/C++
+    #define PARADOX_EXPORT __attribute__((visibility("default")))
+    #define PARADOX_IMPORT
+#else
+    //  Unrecognized Compiler
+    #define PARADOX_EXPORT
+    #define PARADOX_IMPORT
+    #pragma warning Unknown dynamic link import/export semantics.
+#endif
+
+#ifdef PARADOX_PLATFORM_STATIC
+    #define PARADOX_PLATFORM_API
+#elif PARADOX_PLATFORM_BUILD_DLL
+    #define PARADOX_PLATFORM_API PARADOX_EXPORT
+#else
+    #define PARADOX_PLATFORM_API PARADOX_IMPORT
+#endif
+
 namespace Paradox { namespace DataType {
     typedef bool		  B8;
 	typedef char		  C8;
