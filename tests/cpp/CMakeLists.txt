@@ -10,10 +10,10 @@ if(LINUX)
     set(CMAKE_CXX_EXTENSIONS ON)
 endif()
 
-# include(${PROJECT_DIR}/cmake/googletest.cmake)
-# add_subdirectory(${PROJECT_DIR}/modules/googletest googletest)
+include(${PROJECT_DIR}/cmake/googletest.cmake)
+add_subdirectory(${PROJECT_DIR}/modules/googletest googletest)
 
-# enable_testing()
+enable_testing()
 
 add_executable(
     cpp_unit_tests
@@ -28,7 +28,7 @@ target_include_directories(
 target_link_libraries(
     cpp_unit_tests PRIVATE
     paradox-platform-framework
-    # GTest::gtest_main
+    GTest::gtest_main
 )
 
 target_link_directories(
@@ -36,5 +36,5 @@ target_link_directories(
     ${PROJECT_DIR}/build/paradox-platform/cpp_framework/Debug
 )
 
-# include(GoogleTest)
-# gtest_discover_tests(cpp_unit_tests)
+include(GoogleTest)
+gtest_discover_tests(cpp_unit_tests)
