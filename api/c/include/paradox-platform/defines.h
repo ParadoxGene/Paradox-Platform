@@ -7,14 +7,17 @@
 
 #ifdef _MSC_VER
     // Microsoft C/C++
+
     #define PARADOX_EXPORT __declspec(dllexport)
     #define PARADOX_IMPORT __declspec(dllimport)
 #elif __GNUC__
     // GCC C/C++
+
     #define PARADOX_EXPORT __attribute__((visibility("default")))
     #define PARADOX_IMPORT
 #else
-    //  Unrecognized Compiler
+    // Unrecognized Compiler
+
     #define PARADOX_EXPORT
     #define PARADOX_IMPORT
     #pragma warning Unknown dynamic link import/export semantics.
@@ -28,10 +31,10 @@
     #define PARADOX_PLATFORM_API PARADOX_IMPORT
 #endif
 
-typedef _Bool		  paradox_bool8_t;
-typedef char		  paradox_char8_t;
+typedef _Bool         paradox_bool8_t;
+typedef char          paradox_char8_t;
 typedef unsigned char paradox_uchar8_t;
-typedef char16_t	  paradox_uchar16_t;
+typedef char16_t      paradox_uchar16_t;
 typedef char32_t	  paradox_uchar32_t;
 typedef wchar_t		  paradox_wchar_t;
 typedef char*		  paradox_str_t;

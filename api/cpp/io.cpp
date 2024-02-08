@@ -25,7 +25,6 @@ namespace Paradox { namespace IO {
             program_file_path = DataType::String_t(path);
         }
 #elif __linux__ & __GNUC__
-        
         if(!init)
         {
             init = true;
