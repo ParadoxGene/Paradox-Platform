@@ -1,0 +1,23 @@
+name: C/C++ Unit Testing
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      
+    - name: C/C++ Unit Testing Build
+      run: make build_tests
+      
+    - name: C Unit Testing Run
+      run: ${{github.workspace}}/build/paradox-platform/c_unit_testing/c_unit_tests
+
+    - name: C++ Unit Testing Run
+      run: ${{github.workspace}}/build/paradox-platform/cpp_unit_testing/cpp_unit_tests
