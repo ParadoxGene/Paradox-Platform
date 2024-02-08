@@ -6,8 +6,8 @@ Standard headers, code, and files for paradox libraries and software
 [Community Discord](https://discord.gg/KcVBu4n9TU)
 
 # Prerequisites
-- C compiler that supports >=C11 standard.
-- C++ compiler that supports >=C++11 standard.
+- C compiler that supports C11 standard or higher.
+- C++ compiler that supports C++11 standard or higher.
 
 # Building the library & Running tests
 To check if the header files are supported on your system.
