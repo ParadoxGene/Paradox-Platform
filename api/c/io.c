@@ -59,7 +59,9 @@ paradox_cstr_t paradox_program_dir_path(void)
     if(!init)
     {
         init = 1;
-        dir = dirname(paradox_program_file_path());
+        char path[PATH_MAX];
+        readlink("/proc/self/exe", path, PATH_MAX);
+        dir = dirname(path);
     }
     return dir;
 #endif
