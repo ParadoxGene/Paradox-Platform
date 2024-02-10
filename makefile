@@ -39,6 +39,8 @@ else ifeq ($(OS_NAME_S),Linux)
 	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./
 	cmake --build ./build/paradox-platform
 else ifeq ($(OS_NAME_S),OSX)
+	cmake -G"Xcode" -B ./build/paradox-platform -S ./
+	cmake --build ./build/paradox-platform
 endif
 
 build_tests:
