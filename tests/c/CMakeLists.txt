@@ -19,6 +19,9 @@ set_target_properties(c_unit_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_
 target_include_directories(c_unit_tests PRIVATE "${PROJECT_DIR}/api/c/include")
 target_link_libraries(c_unit_tests PRIVATE paradox-platform unity::framework)
 target_link_directories(c_unit_tests PRIVATE "${PROJECT_DIR}/build/paradox-static/$<CONFIG>")
-add_custom_command(TARGET c_unit_tests POST_BUILD 
-    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_DIR}/build/paradox-shared/$<CONFIG>/paradox-platform.dll" "$<TARGET_FILE_DIR:c_unit_tests>/paradox-platform.dll"
-    COMMENT "Copying shared libraries to bin")
+
+if(WIN32)
+    add_custom_command(TARGET c_unit_tests POST_BUILD 
+        COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_DIR}/build/paradox-shared/$<CONFIG>/paradox-platform.dll" "$<TARGET_FILE_DIR:c_unit_tests>/paradox-platform.dll"
+        COMMENT "Copying shared libraries to bin")
+endif()

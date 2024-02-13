@@ -31,24 +31,36 @@ else
 	endif
 endif
 
-all:
+release:
 ifeq ($(OS_NAME_S),Win32)
-	cmake -G"Visual Studio 17" -B ./build/paradox-platform -S ./
-	cmake --build ./build/paradox-platform
+	cmake -G"Visual Studio 17" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Release
+	cmake --build ./build/paradox-platform --config Release
 else ifeq ($(OS_NAME_S),Linux)
-	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./
-	cmake --build ./build/paradox-platform
+	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Release
+	cmake --build ./build/paradox-platform --config Release
 else ifeq ($(OS_NAME_S),OSX)
-	cmake -G"Xcode" -B ./build/paradox-platform -S ./
-	cmake --build ./build/paradox-platform
+	cmake -G"Xcode" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Release
+	cmake --build ./build/paradox-platform --config Release
+endif
+
+debug:
+ifeq ($(OS_NAME_S),Win32)
+	cmake -G"Visual Studio 17" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug
+	cmake --build ./build/paradox-platform --config Debug
+else ifeq ($(OS_NAME_S),Linux)
+	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug
+	cmake --build ./build/paradox-platform --config Debug
+else ifeq ($(OS_NAME_S),OSX)
+	cmake -G"Xcode" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug
+	cmake --build ./build/paradox-platform --config Debug
 endif
 
 build_tests:
 ifeq ($(OS_NAME_S),Win32)
-	cmake -G"Visual Studio 17" -B ./build/paradox-platform -S ./ -DPARADOX_PLATFORM_BUILD_TESTS=ON
-	cmake --build ./build/paradox-platform
+	cmake -G"Visual Studio 17" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug -DPARADOX_PLATFORM_BUILD_TESTS=ON
+	cmake --build ./build/paradox-platform --config Debug
 else ifeq ($(OS_NAME_S),Linux)
-	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./ -DPARADOX_PLATFORM_BUILD_TESTS=ON
-	cmake --build ./build/paradox-platform
+	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug -DPARADOX_PLATFORM_BUILD_TESTS=ON
+	cmake --build ./build/paradox-platform --config Debug
 else ifeq ($(OS_NAME_S),OSX)
 endif

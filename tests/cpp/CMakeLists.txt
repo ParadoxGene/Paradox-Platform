@@ -21,9 +21,12 @@ set_target_properties(cpp_unit_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAK
 target_include_directories(cpp_unit_tests PRIVATE "${PROJECT_DIR}/api/cpp/include")
 target_link_libraries(cpp_unit_tests PRIVATE paradox-platform-framework GTest::gtest_main)
 target_link_directories(cpp_unit_tests PRIVATE "${PROJECT_DIR}/build/paradox-static/$<CONFIG>")
-add_custom_command(TARGET cpp_unit_tests POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_DIR}/build/paradox-shared/$<CONFIG>/paradox-platform-framework.dll" "$<TARGET_FILE_DIR:cpp_unit_tests>/paradox-platform-framework.dll"
-    COMMENT "Copying shared libraries to bin")
+
+if(WIN32)
+    add_custom_command(TARGET cpp_unit_tests POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy "${PROJECT_DIR}/build/paradox-shared/$<CONFIG>/paradox-platform-framework.dll" "$<TARGET_FILE_DIR:cpp_unit_tests>/paradox-platform-framework.dll"
+        COMMENT "Copying shared libraries to bin")
+endif()
 
 include(GoogleTest)
 gtest_discover_tests(cpp_unit_tests)
