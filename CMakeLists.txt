@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
+
+# Use this variable to make the cmakefile once during the call.
+set(PARADOX_PLATFORM_FRAMEWORK_BUILD CACHE INTERNAL ON PARENT_SCOPE)
 set(PROJECT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.")
 
 option(PARADOX_PLATFORM_BUILD_TESTS "Build the test executables" OFF)
