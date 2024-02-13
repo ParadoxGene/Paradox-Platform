@@ -28,12 +28,12 @@ make build_tests
 
 Running C Tests
 ```
-./build/paradox-platform/c_unit_testing/c_unit_tests
+./build/paradox-platform-c-unit-tests/Debug/c_unit_tests
 ```
 
 Running C++ Tests
 ```
-./build/paradox-platform/cpp_unit_testing/cpp_unit_tests
+./build/paradox-platform-cpp-unit-tests/Debug/cpp_unit_tests
 ```
 
 Running Swift Tests
