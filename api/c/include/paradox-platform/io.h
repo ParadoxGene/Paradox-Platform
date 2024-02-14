@@ -19,4 +19,6 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     paradox_cstr_t filename,
     paradox_cstr_t mode);
     
+
+PARADOX_PLATFORM_API paradox_str_t* paradox_file_to_str(FILE* file, size_t* len);
 #endif

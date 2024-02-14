@@ -10,7 +10,7 @@
     #include <string.h>
 #endif
 
-paradox_cstr_t paradox_program_file_path(void)
+PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
 {
     static paradox_bool8_t init = 0;
 #if _WIN32 & _MSC_VER
@@ -33,7 +33,7 @@ paradox_cstr_t paradox_program_file_path(void)
     return NULL;
 }
 
-paradox_cstr_t paradox_program_dir_path(void)
+PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void)
 {
     static paradox_bool8_t init = 0;
 #if _WIN32 & _MSC_VER
@@ -68,7 +68,7 @@ paradox_cstr_t paradox_program_dir_path(void)
     return NULL;
 }
 
-FILE* paradox_bin_dir_fopen(
+PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     paradox_cstr_t filename,
     paradox_cstr_t mode)
 {
@@ -127,4 +127,14 @@ FILE* paradox_bin_dir_fopen(
     }
     
     return NULL;
+}
+
+PARADOX_PLATFORM_API paradox_str_t* paradox_file_to_str(FILE* file, size_t* len)
+{
+    if(!file) return NULL;
+    char* buffer = 0;
+    fseek(file, 0, SEEK_END);
+    *len = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    return malloc(*len);
 }
