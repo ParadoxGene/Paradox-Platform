@@ -129,7 +129,7 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     return NULL;
 }
 
-PARADOX_PLATFORM_API paradox_str_t* paradox_file_to_str(FILE* file, size_t* len)
+PARADOX_PLATFORM_API paradox_str_t paradox_file_to_str(FILE* file, size_t* len)
 {
     if(!file) return NULL;
     char* buffer = 0;
