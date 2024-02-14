@@ -136,7 +136,7 @@ PARADOX_PLATFORM_API paradox_str_t paradox_file_to_str(FILE* file, size_t* len)
     fseek(file, 0, SEEK_END);
     *len = ftell(file);
     fseek(file, 0, SEEK_SET);
-    paradox_str_t buffer = malloc(*len);
+    buffer = malloc(*len);
     if(buffer) fread(buffer, 1, *len, file);
     return buffer;
 }
