@@ -32,6 +32,9 @@
     #define PARADOX_PLATFORM_API PARADOX_IMPORT
 #endif
 
+#define PARADOX_TRUE  true
+#define PARADOX_FALSE false
+
 namespace Paradox { namespace DataType {
     typedef bool		  B8;
 	typedef char		  C8;
