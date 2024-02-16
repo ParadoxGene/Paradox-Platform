@@ -15,9 +15,7 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void);
  * @param filename The path, relative to the program's binary directory.
  * @param mode The mode that the file will be opened as.
  * @return A pointer to the opened file or NULL. */
-PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
-    paradox_cstr_t filename,
-    paradox_cstr_t mode);
+PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(paradox_cstr_t filename, paradox_cstr_t mode);
     
 
 PARADOX_PLATFORM_API paradox_str_t paradox_file_to_str(FILE* file, size_t* len);
