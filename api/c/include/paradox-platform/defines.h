@@ -31,6 +31,9 @@
     #define PARADOX_PLATFORM_API PARADOX_IMPORT
 #endif
 
+#define PARADOX_TRUE  1
+#define PARADOX_FALSE 0
+
 typedef _Bool         paradox_bool8_t;
 typedef char          paradox_char8_t;
 typedef unsigned char paradox_uchar8_t;
