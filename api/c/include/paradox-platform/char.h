@@ -9,7 +9,6 @@ PARADOX_PLATFORM_API const paradox_bool8_t paradox_uchar8_lower_eq(const paradox
 PARADOX_PLATFORM_API const paradox_bool8_t paradox_uchar16_lower_eq(const paradox_uchar16_t c1, const paradox_uchar16_t c2);
 PARADOX_PLATFORM_API const paradox_bool8_t paradox_uchar32_lower_eq(const paradox_uchar32_t c1, const paradox_uchar32_t c2);
 
-
 PARADOX_PLATFORM_API const paradox_bool8_t paradox_uchar32_isdigit(const paradox_uchar32_t c);
 PARADOX_PLATFORM_API const paradox_bool8_t paradox_uchar32_isalpha(const paradox_uchar32_t c);
 PARADOX_PLATFORM_API const paradox_bool8_t paradox_uchar32_isalnum(const paradox_uchar32_t c);
