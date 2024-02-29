@@ -1,0 +1,1 @@
+set(PARADOX_GCC_DEBUG_FLAGS -Og -pedantic -Wall -Wextra -Werror)

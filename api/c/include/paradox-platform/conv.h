@@ -3,6 +3,6 @@
 
 #include <paradox-platform/defines.h>
 
-PARADOX_PLATFORM_API const paradox_bool8_t paradox_hex_to_uint32(paradox_str_t hex, const size_t len, paradox_uint32_t* code);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_hex_to_uint32(paradox_str_t hex, const size_t len, paradox_uint32_t* code);
 
 #endif

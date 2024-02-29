@@ -21,7 +21,7 @@ set_target_properties(paradox-platform PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../paradox-shared/$<CONFIG>")
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(paradox-platform PRIVATE -Werror)
+    target_compile_options(paradox-platform PRIVATE ${PARADOX_DEBUG_FLAGS})
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(paradox-platform PRIVATE /WX)
 endif()

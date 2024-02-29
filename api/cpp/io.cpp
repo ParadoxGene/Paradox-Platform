@@ -1,8 +1,8 @@
 #include <paradox-platform/io.hpp>
 
-#if _WIN32 & _MSC_VER
+#if defined(_WIN32) & defined(_MSC_VER)
     #include <windows.h>
-#elif __linux__ & __GNUC__
+#elif defined(__linux__) & defined(__GNUC__)
     #include <unistd.h>
     #include <libgen.h>
     #include <linux/limits.h>
@@ -16,7 +16,7 @@ namespace Paradox { namespace IO {
         static DataType::B8 init = false;
         static DataType::String_t program_file_path;
         
-#if _WIN32 & _MSC_VER
+#if defined(_WIN32) & defined(_MSC_VER)
         if(!init)
         {
             init = true;
@@ -24,13 +24,17 @@ namespace Paradox { namespace IO {
             _get_pgmptr(&path);
             program_file_path = DataType::String_t(path);
         }
-#elif __linux__ & __GNUC__
+#elif defined(__linux__) & defined(__GNUC__)
         if(!init)
         {
             init = true;
             char path[PATH_MAX];
-            readlink("/proc/self/exe", path, PATH_MAX);
-            program_file_path = DataType::String_t(path);
+            if(-1 == readlink("/proc/self/exe", path, PATH_MAX))
+            {   // on error
+                init = false;
+                return program_file_path;
+            }
+            else program_file_path = DataType::String_t(path);
         }
 #endif
         return program_file_path;

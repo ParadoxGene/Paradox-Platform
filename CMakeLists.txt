@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 # Use this variable to make the cmakefile once during the call.
 set(PARADOX_PLATFORM_FRAMEWORK_BUILD CACHE INTERNAL ON PARENT_SCOPE)
 set(PROJECT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/.")
+include(${PROJECT_DIR}/cmake/settings.cmake)
 
 option(PARADOX_PLATFORM_BUILD_TESTS "Build the test executables" OFF)
 
@@ -16,6 +17,7 @@ if(APPLE)
 elseif(LINUX)
     project(paradox-platform C CXX)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set(PARADOX_DEBUG_FLAGS ${PARADOX_GCC_DEBUG_FLAGS})
         if(NOT PARADOX_PLATFORM_C_FRAMEWORK_BUILD)
             add_subdirectory("./api/c" "./c_framework")
         endif()

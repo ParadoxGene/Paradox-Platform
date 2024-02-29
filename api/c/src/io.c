@@ -1,8 +1,8 @@
 #include <paradox-platform/io.h>
 
-#if _WIN32 & _MSC_VER
+#if defined(_WIN32) & defined(_MSC_VER)
     #include <windows.h>
-#elif __linux__ & __GNUC__
+#elif defined(__linux__) & defined(__GNUC__)
     #include <unistd.h>
     #include <libgen.h>
     #include <linux/limits.h>
@@ -13,7 +13,7 @@
 PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
 {
     static paradox_bool8_t init = 0;
-#if _WIN32 & _MSC_VER
+#if defined(_WIN32) & defined(_MSC_VER)
     static LPSTR path = NULL;
     if(!init)
     {
@@ -21,12 +21,16 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
         _get_pgmptr(&path);
     }
     return path;
-#elif __linux__ & __GNUC__
+#elif defined(__linux__) & defined(__GNUC__)
     static char path[PATH_MAX];
     if(!init)
     {
         init = 1;
-        readlink("/proc/self/exe", path, PATH_MAX);
+        if(-1 == readlink("/proc/self/exe", path, PATH_MAX))
+        {   // on error
+            init = 0;
+            return NULL;
+        }
     }
     return path;
 #endif
@@ -36,7 +40,7 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
 PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void)
 {
     static paradox_bool8_t init = 0;
-#if _WIN32 & _MSC_VER
+#if defined(_WIN32) & defined(_MSC_VER)
     static LPSTR dir = NULL;
     if(!init)
     {
@@ -54,14 +58,18 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void)
         dir[(_MAX_DRIVE - 1) + program_dir_buf_sz] = '\0';
     }
     return dir;
-#elif __linux__ & __GNUC__
+#elif defined(__linux__) & defined(__GNUC__)
     static char* dir = NULL;
     if(!init)
     {
         init = 1;
         char path[PATH_MAX];
-        readlink("/proc/self/exe", path, PATH_MAX);
-        dir = dirname(path);
+        if(-1 == readlink("/proc/self/exe", path, PATH_MAX))
+        {   // on error
+            init = 0;
+            return NULL;
+        }
+        else dir = dirname(path);
     }
     return dir;
 #endif
@@ -79,17 +87,17 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     case '/':
     case '\\':
     {
-#if _WIN32 & _MSC_VER
+#if defined(_WIN32) & defined(_MSC_VER)
         FILE* file;
         fopen_s(&file, filename, mode);
         return file;
-#elif __linux__ & __GNUC__
+#elif defined(__linux__) & defined(__GNUC__)
         return fopen(filename, mode);
 #endif
     }
     default:
     {
-#if _WIN32 & _MSC_VER
+#if defined(_WIN32) & defined(_MSC_VER)
     if(isalpha(filename[0]) && filename[1] == ':')
     {
         FILE* file;
@@ -109,7 +117,7 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     fopen_s(&file, rel_file_buf, mode);
     free(rel_file_buf);
     return file;
-#elif __linux__ & __GNUC__
+#elif defined(__linux__) & defined(__GNUC__)
     const size_t program_dir_buf_sz = strlen(paradox_program_dir_path());
     const size_t file_buf_sz = strlen(filename);
 
@@ -131,12 +139,25 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
 
 PARADOX_PLATFORM_API paradox_str_t paradox_file_to_str(FILE* file, size_t* len)
 {
-    if(!file) return NULL;
-    char* buffer = 0;
+    paradox_str_t buffer = NULL;
+    if(!file) goto ret_val;
+    
     fseek(file, 0, SEEK_END);
-    *len = ftell(file) ;
+    long flen = ftell(file);
+    if(flen <= 0) goto rst_file;
+    *len = (size_t)flen;
+    
     fseek(file, 0, SEEK_SET);
     buffer = malloc(*len + 1);
-    if(buffer) buffer[fread(buffer, 1, *len, file)] = '\0';
+    if(buffer)
+    {
+        size_t count = fread(buffer, 1, *len, file);
+        buffer[count] = '\0';
+    }
+
+    rst_file:
+    fseek(file, 0, SEEK_SET);
+
+    ret_val:
     return buffer;
 }
