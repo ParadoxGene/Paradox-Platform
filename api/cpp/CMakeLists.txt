@@ -20,11 +20,7 @@ set_target_properties(paradox-platform-framework PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../paradox-static/$<CONFIG>"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../paradox-shared/$<CONFIG>")
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(paradox-platform-framework PRIVATE ${PARADOX_DEBUG_FLAGS})
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(paradox-platform-framework PRIVATE /WX)
-endif()
+target_compile_options(paradox-platform-framework PRIVATE ${PARADOX_DEBUG_FLAGS})
 
 target_compile_definitions(paradox-platform-framework PRIVATE PARADOX_PLATFORM_BUILD_DLL)
 target_include_directories(paradox-platform-framework PUBLIC "./include")

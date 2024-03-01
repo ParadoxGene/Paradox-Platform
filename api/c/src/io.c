@@ -33,8 +33,9 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
         }
     }
     return path;
-#endif
+#else
     return NULL;
+#endif
 }
 
 PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void)
@@ -72,8 +73,9 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void)
         else dir = dirname(path);
     }
     return dir;
-#endif
+#else
     return NULL;
+#endif
 }
 
 PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
@@ -129,12 +131,12 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     FILE* file = fopen(rel_file_buf, mode);
     free(rel_file_buf);
     return file;
+#else
+    return NULL;
 #endif
     break;
     }
     }
-    
-    return NULL;
 }
 
 PARADOX_PLATFORM_API paradox_str_t paradox_file_to_str(FILE* file, size_t* len)
