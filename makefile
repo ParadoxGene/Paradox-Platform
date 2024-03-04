@@ -1,66 +1,52 @@
-ifeq ($(OS),Windows_NT)
-	OS_NAME_S := Win32
-	ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
-		OS_NAME_P := AMD64
-	else
-		ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
-			OS_NAME_P := AMD64
-		endif
-		ifeq ($(PROCESSOR_ARCHITECTURE),x86)
-			OS_NAME_P := IA32
-		endif
-	endif
-else
-	UNAME_S := $(shell uname -s)
-	ifeq ($(UNAME_S),Linux)
-		OS_NAME_S := Linux
-	endif
-	ifeq ($(UNAME_S),Darwin)
-		OS_NAME_S := OSX
-	endif
+include config/make/operating-system.mk
+include config/make/build-commands.mk
 
-	UNAME_P := $(shell uname -p)
-	ifeq ($(UNAME_P),x86_64)
-		OS_NAME_P := AMD64
-	endif
-	ifneq ($(filter %86,$(UNAME_P)),)
-		OS_NAME_P := IA32
-	endif
-	ifneq ($(filter arm%,$(UNAME_P)),)
-		OS_NAME_P := ARM
-	endif
+PROJECT_NAME := paradox-platform
+
+ifeq ($(OS_NAME),Windows)
+all: msvc-release-c msvc-release-cpp;
+else ifeq ($(OS_NAME),Linux)
+all: gcc-release-c gcc-release-cpp;
+else ifeq ($(OS_NAME),Macintosh)
+all: xcode-release-swift;
 endif
 
-release:
-ifeq ($(OS_NAME_S),Win32)
-	cmake -G"Visual Studio 17" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Release
-	cmake --build ./build/paradox-platform --config Release
-else ifeq ($(OS_NAME_S),Linux)
-	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Release
-	cmake --build ./build/paradox-platform --config Release
-else ifeq ($(OS_NAME_S),OSX)
-	cmake -G"Xcode" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Release
-	cmake --build ./build/paradox-platform --config Release
-endif
+%-c: %-c-lib %-c-tests %-c-docs;
+%-cpp: %-cpp-lib %-cpp-tests %-cpp-docs;
+%-swift: %-swift-lib %-swift-tests %-swift-docs;
 
-debug:
-ifeq ($(OS_NAME_S),Win32)
-	cmake -G"Visual Studio 17" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug
-	cmake --build ./build/paradox-platform --config Debug
-else ifeq ($(OS_NAME_S),Linux)
-	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug
-	cmake --build ./build/paradox-platform --config Debug
-else ifeq ($(OS_NAME_S),OSX)
-	cmake -G"Xcode" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug
-	cmake --build ./build/paradox-platform --config Debug
-endif
+%-lib:
+	@ cmake\
+		-G $(call get-cmake-generator)\
+		-B "./build/$(call build-compiler-part)-$(call build-lang-part)/$(PROJECT_NAME)/cmake"\
+		-S "./"\
+		-D CMAKE_C_COMPILER=$(call get-cmake-c-compiler)\
+		-D CMAKE_CXX_COMPILER=$(call get-cmake-cxx-compiler)\
+		-D PARADOX_LANGUAGE=$(call build-lang-part)\
+		-D PARADOX_COMPILER=$(call build-compiler-part)\
+		-D CMAKE_BUILD_TYPE=$(call build-config-part)\
+		-D PARADOX_PLATFORM_BUILD_LIBS=ON -DPARADOX_PLATFORM_BUILD_TESTS=OFF
 
-build_tests:
-ifeq ($(OS_NAME_S),Win32)
-	cmake -G"Visual Studio 17" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug -DPARADOX_PLATFORM_BUILD_TESTS=ON
-	cmake --build ./build/paradox-platform --config Debug
-else ifeq ($(OS_NAME_S),Linux)
-	cmake -G"Unix Makefiles" -B ./build/paradox-platform -S ./ -DCMAKE_BUILD_TYPE=Debug -DPARADOX_PLATFORM_BUILD_TESTS=ON
-	cmake --build ./build/paradox-platform --config Debug
-else ifeq ($(OS_NAME_S),OSX)
-endif
+	@ cmake\
+		--build "./build/$(call build-compiler-part)-$(call build-lang-part)/$(PROJECT_NAME)/cmake" --config $(call get-cmake-config-type)
+
+%-tests: %-lib
+	@ echo Building Test Cases...
+	
+	@ cmake\
+		-G $(call get-cmake-generator)\
+		-B "./build/$(call build-compiler-part)-$(call build-lang-part)/unit-tests/cmake"\
+		-S "./"\
+		-D CMAKE_C_COMPILER=$(call get-cmake-c-compiler)\
+		-D CMAKE_CXX_COMPILER=$(call get-cmake-cxx-compiler)\
+		-D PARADOX_LANGUAGE=$(call build-lang-part)\
+		-D PARADOX_COMPILER=$(call build-compiler-part)\
+		-D CMAKE_BUILD_TYPE=$(call build-config-part)\
+		-D PARADOX_PLATFORM_BUILD_LIBS=OFF -DPARADOX_PLATFORM_BUILD_TESTS=ON
+	
+	@ cmake\
+		--build "./build/$(call build-compiler-part)-$(call build-lang-part)/unit-tests/cmake" --config $(call get-cmake-config-type)
+	
+	@ echo Done Building Test Cases
+
+%-docs: %-lib;
