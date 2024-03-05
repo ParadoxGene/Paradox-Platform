@@ -19,8 +19,11 @@ namespace Paradox { namespace IO {
         {
             init = true;
             LPSTR path;
-            _get_pgmptr(&path);
+            DWORD buffer_len = MAX_PATH;
+            path = new CHAR[buffer_len];
+            GetModuleFileNameA(NULL, path, buffer_len);
             program_file_path = DataType::String_t(path);
+            delete [] path;
         }
 #elif defined(__linux__)
         if(!init)

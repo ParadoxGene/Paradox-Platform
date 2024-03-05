@@ -19,7 +19,9 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
     if(!init)
     {
         init = 1;
-        _get_pgmptr(&path);
+        DWORD buffer_len = MAX_PATH;
+        path = malloc(sizeof(CHAR) * buffer_len);
+        GetModuleFileNameA(NULL, path, buffer_len);
     }
     return path;
 #elif defined(__linux__)
@@ -92,7 +94,7 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     default:
     {
 #if defined(_WIN32)
-    if(isalpha(filename[0]) && filename[1] == ':') return return fopen(filename, mode);
+    if(isalpha(filename[0]) && filename[1] == ':') return fopen(filename, mode);
 
     const size_t program_dir_buf_sz = strlen(paradox_program_dir_path());
     const size_t file_buf_sz = strlen(filename);
