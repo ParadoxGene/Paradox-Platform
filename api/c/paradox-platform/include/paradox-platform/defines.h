@@ -5,13 +5,19 @@
 #include <uchar.h>
 #include <wchar.h>
 
-#ifdef _MSC_VER
-    // Microsoft C/C++
+#if defined(_WIN32) && defined(_MSC_VER)
+    // Microsoft Visual C/C++
+    #define PARADOX_MSVC
 
     #define PARADOX_EXPORT __declspec(dllexport)
     #define PARADOX_IMPORT __declspec(dllimport)
-#elif __GNUC__
-    // GCC C/C++
+#elif defined(__GNUC__)
+    // GCC or Clang C/C++
+    #if defined(__clang__)
+        #define PARADOX_CLANG
+    #else
+        #define PARADOX_GCC
+    #endif
 
     #define PARADOX_EXPORT __attribute__((visibility("default")))
     #define PARADOX_IMPORT
@@ -21,6 +27,16 @@
     #define PARADOX_EXPORT
     #define PARADOX_IMPORT
     #pragma warning Unknown dynamic link import/export semantics.
+#endif
+
+#if defined(_WIN32)
+    #define PARADOX_WINDOWS
+#elif defined(__linux__)
+    #if defined(__ANDROID__)
+        #define PARADOX_ANDROID
+    #else
+        #define PARADOX_LINUX
+    #endif
 #endif
 
 #ifdef PARADOX_PLATFORM_STATIC

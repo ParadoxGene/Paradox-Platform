@@ -1,19 +1,20 @@
 #include <paradox-platform/io.h>
 
-#if defined(_WIN32) & defined(_MSC_VER)
+#if defined(_WIN32)
     #include <windows.h>
-#elif defined(__linux__) & defined(__GNUC__)
+#elif defined(__linux__)
     #include <unistd.h>
     #include <libgen.h>
     #include <linux/limits.h>
-    #include <stdlib.h>
-    #include <string.h>
 #endif
+
+#include <stdlib.h>
+#include <string.h>
 
 PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
 {
     static paradox_bool8_t init = 0;
-#if defined(_WIN32) & defined(_MSC_VER)
+#if defined(_WIN32)
     static LPSTR path = NULL;
     if(!init)
     {
@@ -21,7 +22,7 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
         _get_pgmptr(&path);
     }
     return path;
-#elif defined(__linux__) & defined(__GNUC__)
+#elif defined(__linux__)
     static char path[PATH_MAX];
     if(!init)
     {
@@ -34,14 +35,14 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_file_path(void)
     }
     return path;
 #else
-    return NULL;
+    #error Operating System is not supported.
 #endif
 }
 
 PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void)
 {
     static paradox_bool8_t init = 0;
-#if defined(_WIN32) & defined(_MSC_VER)
+#if defined(_WIN32)
     static LPSTR dir = NULL;
     if(!init)
     {
@@ -59,7 +60,7 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void)
         dir[(_MAX_DRIVE - 1) + program_dir_buf_sz] = '\0';
     }
     return dir;
-#elif defined(__linux__) & defined(__GNUC__)
+#elif defined(__linux__)
     static char* dir = NULL;
     if(!init)
     {
@@ -74,7 +75,7 @@ PARADOX_PLATFORM_API paradox_cstr_t paradox_program_dir_path(void)
     }
     return dir;
 #else
-    return NULL;
+    #error Operating System is not supported.
 #endif
 }
 
@@ -87,25 +88,11 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     switch(filename[0])
     {
     case '/':
-    case '\\':
-    {
-#if defined(_WIN32) & defined(_MSC_VER)
-        FILE* file;
-        fopen_s(&file, filename, mode);
-        return file;
-#elif defined(__linux__) & defined(__GNUC__)
-        return fopen(filename, mode);
-#endif
-    }
+    case '\\': return fopen(filename, mode);
     default:
     {
-#if defined(_WIN32) & defined(_MSC_VER)
-    if(isalpha(filename[0]) && filename[1] == ':')
-    {
-        FILE* file;
-        fopen_s(&file, filename, mode);
-        return file;
-    }
+#if defined(_WIN32)
+    if(isalpha(filename[0]) && filename[1] == ':') return return fopen(filename, mode);
 
     const size_t program_dir_buf_sz = strlen(paradox_program_dir_path());
     const size_t file_buf_sz = strlen(filename);
@@ -115,11 +102,10 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     strcpy_s(rel_file_buf + program_dir_buf_sz, file_buf_sz + 1, filename);
     rel_file_buf[program_dir_buf_sz + file_buf_sz] = '\0';
     
-    FILE* file;
-    fopen_s(&file, rel_file_buf, mode);
+    FILE* file = fopen(rel_file_buf, mode);
     free(rel_file_buf);
     return file;
-#elif defined(__linux__) & defined(__GNUC__)
+#elif defined(__linux__)
     const size_t program_dir_buf_sz = strlen(paradox_program_dir_path());
     const size_t file_buf_sz = strlen(filename);
 
@@ -132,9 +118,8 @@ PARADOX_PLATFORM_API FILE* paradox_bin_dir_fopen(
     free(rel_file_buf);
     return file;
 #else
-    return NULL;
+    #error Operating System is not supported.
 #endif
-    break;
     }
     }
 }

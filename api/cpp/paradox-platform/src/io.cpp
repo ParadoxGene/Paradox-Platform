@@ -1,13 +1,11 @@
 #include <paradox-platform/io.hpp>
 
-#if defined(_WIN32) & defined(_MSC_VER)
+#if defined(_WIN32)
     #include <windows.h>
-#elif defined(__linux__) & defined(__GNUC__)
+#elif defined(__linux__)
     #include <unistd.h>
     #include <libgen.h>
     #include <linux/limits.h>
-    #include <stdlib.h>
-    #include <string.h>
 #endif
 
 namespace Paradox { namespace IO {
@@ -16,7 +14,7 @@ namespace Paradox { namespace IO {
         static DataType::B8 init = false;
         static DataType::String_t program_file_path;
         
-#if defined(_WIN32) & defined(_MSC_VER)
+#if defined(_WIN32)
         if(!init)
         {
             init = true;
@@ -24,7 +22,7 @@ namespace Paradox { namespace IO {
             _get_pgmptr(&path);
             program_file_path = DataType::String_t(path);
         }
-#elif defined(__linux__) & defined(__GNUC__)
+#elif defined(__linux__)
         if(!init)
         {
             init = true;
