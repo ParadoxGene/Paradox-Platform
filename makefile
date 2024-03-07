@@ -1,7 +1,8 @@
 include config/make/operating-system.mk
 include config/make/build-commands.mk
 
-PROJECT_NAME := paradox-platform
+PROJECT_NAME:=paradox-platform
+PROJECT_PREFIX:=PARADOX_PLATFORM
 
 ifeq ($(OS_NAME),Windows)
 all: msvc-release-c msvc-release-cpp;
@@ -12,7 +13,8 @@ all: xcode-release-swift;
 endif
 
 define build_project
-	cmake\
+@ cmake\
+	--log-level=STATUS\
 	-G $(call get-cmake-generator)\
 	-B "./build/$(call build-compiler-part)-$(call build-lang-part)/${1}/cmake"\
 	-S "./"\
@@ -21,9 +23,9 @@ define build_project
 	-D CMAKE_BUILD_TYPE=$(call build-config-part)\
 	-D PARADOX_COMPILER=$(call build-compiler-part)\
 	-D PARADOX_LANGUAGE=$(call build-lang-part)\
-	-D PARADOX_PLATFORM_BUILD_LIBS=${2}\
-	-D PARADOX_PLATFORM_BUILD_TESTS=${3}\
-	-D PARADOX_PLATFORM_BUILD_DOCS=${4}
+	-D $(PROJECT_PREFIX)_BUILD_LIBS=${2}\
+	-D $(PROJECT_PREFIX)_BUILD_TESTS=${3}\
+	-D $(PROJECT_PREFIX)_BUILD_DOCS=${4}
 @ cmake\
 	--build "./build/$(call build-compiler-part)-$(call build-lang-part)/${1}/cmake" --config $(call get-cmake-config-type)
 endef
@@ -45,16 +47,20 @@ endef
 %-swift: %-swift-lib %-swift-tests %-swift-docs;
 
 %-lib:
-	@ echo Building Libs...
-	$(call build_project_libs,paradox-platform)
-	@ echo Done Building Libs
-
+	@ echo ---$(PROJECT_NAME): Building Libraries---
+	$(call build_project_libs,$(PROJECT_NAME))
+	@ echo ---$(PROJECT_NAME): Libraries Are Ready---
+	@ echo  
+	@ echo 
 %-tests: %-lib
-	@ echo Building Tests...
-	$(call build_project_tests,paradox-platform)
-	@ echo Done Building Tests
-
+	@ echo ---$(PROJECT_NAME): Building Tests---
+	$(call build_project_tests,$(PROJECT_NAME))
+	@ echo ---$(PROJECT_NAME): Tests Are Ready---
+	@ echo
+	@ echo 
 %-docs:
-	@ echo Building Docs...
-	$(call build_project_docs,paradox-platform)
-	@ echo Done Building Docs
+	@ echo ---$(PROJECT_NAME): Building Documentation---
+	$(call build_project_docs,$(PROJECT_NAME))
+	@ echo ---$(PROJECT_NAME): Documentation Is Ready---
+	@ echo  
+	@ echo 

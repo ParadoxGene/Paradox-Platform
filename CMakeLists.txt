@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.14)
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
 endif()
