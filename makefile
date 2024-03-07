@@ -12,7 +12,7 @@ all: xcode-release-swift;
 endif
 
 define build_project
-@ cmake\
+	cmake\
 	-G $(call get-cmake-generator)\
 	-B "./build/$(call build-compiler-part)-$(call build-lang-part)/${1}/cmake"\
 	-S "./"\
@@ -21,23 +21,23 @@ define build_project
 	-D CMAKE_BUILD_TYPE=$(call build-config-part)\
 	-D PARADOX_COMPILER=$(call build-compiler-part)\
 	-D PARADOX_LANGUAGE=$(call build-lang-part)\
-	-D PARADOX_BUILD_LIBS=${2}\
-	-D PARADOX_BUILD_TESTS=${3}\
-	-D PARADOX_BUILD_DOCS=${4}
+	-D PARADOX_PLATFORM_BUILD_LIBS=${2}\
+	-D PARADOX_PLATFORM_BUILD_TESTS=${3}\
+	-D PARADOX_PLATFORM_BUILD_DOCS=${4}
 @ cmake\
 	--build "./build/$(call build-compiler-part)-$(call build-lang-part)/${1}/cmake" --config $(call get-cmake-config-type)
 endef
 
 define build_project_libs
-	$(call build_project, ${1}, ON, OFF, OFF)
+	$(call build_project,${1},ON,OFF,OFF)
 endef
 
 define build_project_tests
-	$(call build_project, ${1}, OFF, ON, OFF)
+	$(call build_project,${1},OFF,ON,OFF)
 endef
 
 define build_project_docs
-	$(call build_project, ${1}, OFF, OFF, ON)
+	$(call build_project,${1},OFF,OFF,ON)
 endef
 
 %-c: %-c-lib %-c-tests %-c-docs;
@@ -46,15 +46,15 @@ endef
 
 %-lib:
 	@ echo Building Libs...
-	$(call build_project_libs, paradox-platform)
+	$(call build_project_libs,paradox-platform)
 	@ echo Done Building Libs
 
 %-tests: %-lib
 	@ echo Building Tests...
-	$(call build_project_tests, paradox-platform)
+	$(call build_project_tests,paradox-platform)
 	@ echo Done Building Tests
 
 %-docs:
 	@ echo Building Docs...
-	$(call build_project_docs, paradox-platform)
+	$(call build_project_docs,paradox-platform)
 	@ echo Done Building Docs
