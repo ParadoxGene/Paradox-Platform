@@ -1,5 +1,6 @@
 include config/make/operating-system.mk
 include config/make/build-commands.mk
+include config/make/common.mk
 
 PROJECT_NAME:=paradox-platform
 PROJECT_PREFIX:=PARADOX_PLATFORM
@@ -47,20 +48,20 @@ endef
 %-swift: %-swift-lib %-swift-tests %-swift-docs;
 
 %-lib:
-	@ echo ---$(PROJECT_NAME): Building Libraries---
+	@ echo ---$(PROJECT_NAME): building libraries---
 	$(call build_project_libs,$(PROJECT_NAME))
-	@ echo ---$(PROJECT_NAME): Libraries Are Ready---
-	@ echo.
-	@ echo.
+	@ echo ---$(PROJECT_NAME): libraries are ready---
+	$(call newline)
+	$(call newline)
 %-tests: %-lib
-	@ echo ---$(PROJECT_NAME): Building Tests---
+	@ echo ---$(PROJECT_NAME): building tests---
 	$(call build_project_tests,$(PROJECT_NAME))
-	@ echo ---$(PROJECT_NAME): Tests Are Ready---
-	@ echo.
-	@ echo.
+	@ echo ---$(PROJECT_NAME): tests are ready---
+	$(call newline)
+	$(call newline)
 %-docs:
-	@ echo ---$(PROJECT_NAME): Building Documentation---
+	@ echo ---$(PROJECT_NAME): building documentation---
 	$(call build_project_docs,$(PROJECT_NAME))
-	@ echo ---$(PROJECT_NAME): Documentation Is Ready---
-	@ echo.
-	@ echo.
+	@ echo ---$(PROJECT_NAME): documentation is ready---
+	$(call newline)
+	$(call newline)
