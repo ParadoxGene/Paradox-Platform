@@ -50,17 +50,17 @@ endef
 	@ echo ---$(PROJECT_NAME): Building Libraries---
 	$(call build_project_libs,$(PROJECT_NAME))
 	@ echo ---$(PROJECT_NAME): Libraries Are Ready---
-	@ echo  
-	@ echo 
+	@ echo.
+	@ echo.
 %-tests: %-lib
 	@ echo ---$(PROJECT_NAME): Building Tests---
 	$(call build_project_tests,$(PROJECT_NAME))
 	@ echo ---$(PROJECT_NAME): Tests Are Ready---
-	@ echo
-	@ echo 
+	@ echo.
+	@ echo.
 %-docs:
 	@ echo ---$(PROJECT_NAME): Building Documentation---
 	$(call build_project_docs,$(PROJECT_NAME))
 	@ echo ---$(PROJECT_NAME): Documentation Is Ready---
-	@ echo  
-	@ echo 
+	@ echo.
+	@ echo.
