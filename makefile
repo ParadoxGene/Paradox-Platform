@@ -24,35 +24,60 @@ define build_project
 	-D CMAKE_BUILD_TYPE=$(call build-config-part)\
 	-D PARADOX_COMPILER=$(call build-compiler-part)\
 	-D PARADOX_LANGUAGE=$(call build-lang-part)\
-	-D $(PROJECT_PREFIX)_BUILD_LIBS=${2}\
-	-D $(PROJECT_PREFIX)_BUILD_TESTS=${3}\
-	-D $(PROJECT_PREFIX)_BUILD_DOCS=${4}
+	-D PARADOX_BUILD_C_LIBS=${2}\
+	-D PARADOX_BUILD_CXX_LIBS=${3}\
+	-D PARADOX_BUILD_Swift_LIBS=${4}\
+	-D PARADOX_BUILD_TESTS=${5}\
+	-D PARADOX_BUILD_DOCS=${6}
 @ cmake\
 	--build "./build/$(call build-compiler-part)-$(call build-lang-part)/${1}/cmake" --config $(call get-cmake-config-type)
 endef
 
-define build_project_libs
-	$(call build_project,${1},ON,OFF,OFF)
+define build_project_c_libs
+	$(call build_project,${1},ON,OFF,OFF,OFF,OFF)
+endef
+
+define build_project_cpp_libs
+	$(call build_project,${1},OFF,ON,OFF,OFF,OFF)
+endef
+
+define build_project_swift_libs
+	$(call build_project,${1},OFF,OFF,ON,OFF,OFF)
 endef
 
 define build_project_tests
-	$(call build_project,${1},OFF,ON,OFF)
+	$(call build_project,${1},OFF,OFF,OFF,ON,OFF)
 endef
 
 define build_project_docs
-	$(call build_project,${1},OFF,OFF,ON)
+	$(call build_project,${1},OFF,OFF,OFF,OFF,ON)
 endef
 
 %-c: %-c-lib %-c-tests %-c-docs;
 %-cpp: %-cpp-lib %-cpp-tests %-cpp-docs;
 %-swift: %-swift-lib %-swift-tests %-swift-docs;
 
-%-lib:
-	@ echo ---$(PROJECT_NAME): building libraries---
-	$(call build_project_libs,$(PROJECT_NAME))
-	@ echo ---$(PROJECT_NAME): libraries are ready---
+%-c-lib:
+	@ echo ---$(PROJECT_NAME): building c libraries---
+	$(call build_project_c_libs,$(PROJECT_NAME))
+	@ echo ---$(PROJECT_NAME): c libraries are ready---
 	$(call newline)
 	$(call newline)
+
+%-cpp-lib:
+	@ echo ---$(PROJECT_NAME): building c++ libraries---
+	$(call build_project_cpp_libs,$(PROJECT_NAME))
+	@ echo ---$(PROJECT_NAME): c++ libraries are ready---
+	$(call newline)
+	$(call newline)
+
+%-swift-lib:
+	@ echo ---$(PROJECT_NAME): building swift libraries---
+	$(call build_project_swift_libs,$(PROJECT_NAME))
+	@ echo ---$(PROJECT_NAME): swift libraries are ready---
+	$(call newline)
+	$(call newline)
+
 %-tests: %-lib
 	@ echo ---$(PROJECT_NAME): building tests---
 	$(call build_project_tests,$(PROJECT_NAME))
