@@ -1,1 +1,2 @@
+paradox_append_src_include(PARADOX_PLATFORM paradox-platform)
 paradox_add_library(PARADOX_PLATFORM paradox-platform ${PARADOX_PLATFORM_DIR})
