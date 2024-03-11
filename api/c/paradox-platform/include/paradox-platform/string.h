@@ -26,6 +26,6 @@ PARADOX_PLATFORM_API void paradox_destroy_string(paradox_string* str);
 
 PARADOX_PLATFORM_API paradox_string_errno_t paradox_string_append_str(paradox_string* str, paradox_str_t data);
 PARADOX_PLATFORM_API paradox_string_errno_t paradox_string_append_string(paradox_string* dest, paradox_string* src);
-PARADOX_PLATFORM_API paradox_string_errno_t paradox_string_remove(const size_t pos, const size_t len);
+PARADOX_PLATFORM_API paradox_string_errno_t paradox_string_remove(paradox_string* str, const size_t pos, const size_t len);
 
 #endif

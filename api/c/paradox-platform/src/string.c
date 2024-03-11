@@ -62,8 +62,17 @@ PARADOX_PLATFORM_API paradox_string_errno_t paradox_string_append_string(paradox
     return PARADOX_STRING_OK;
 }
 
-PARADOX_PLATFORM_API paradox_string_errno_t paradox_string_remove(const size_t pos, const size_t len)
+PARADOX_PLATFORM_API paradox_string_errno_t paradox_string_remove(paradox_string* str, const size_t pos, const size_t len)
 {
-    // TODO Later
+    if(NULL == str) return PARADOX_STRING_BAD_PTR;
+    if(str->data_len < pos + len) return PARADOX_STRING_BAD_RANGE;
+    memcpy(str->data + pos, str->data + pos + len, (pos + len) - str->data_len + 1);
+    str->data_len -= len;
+    size_t new_alloc_len = paradox_string_calc_alloc_size(str->data_len + 1);
+    if(new_alloc_len > str->alloc_len)
+    {
+        str->alloc_len = new_alloc_len;
+        str->data = realloc(str->data, str->alloc_len);
+    }
     return PARADOX_STRING_OK;
 }
