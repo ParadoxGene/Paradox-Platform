@@ -1,4 +1,4 @@
-#include <paradox-platform/char.h>
+#include <paradox-platform/characters.h>
 #include <ctype.h>
 
 PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_lower_eq(const paradox_char8_t c1, const paradox_char8_t c2)
