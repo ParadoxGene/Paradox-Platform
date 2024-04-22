@@ -17,6 +17,45 @@ typedef enum paradox_numerics_errno_t
     PARADOX_NUMERICS_BAD_PTR
 } paradox_numerics_errno_t;
 
+#define PARADOX_NUMERICS_UINT64_MAX ((uint64_t)(0xFFFFFFFFFFFFFFFFULL))
+#define PARADOX_NUMERICS_UINT64_MIN ((uint64_t)(0x0ULL))
+#define PARADOX_NUMERICS_UINT32_MAX ((uint32_t)(0xFFFFFFFFUL))
+#define PARADOX_NUMERICS_UINT32_MIN ((uint32_t)(0x0UL))
+#define PARADOX_NUMERICS_UINT16_MAX ((uint16_t)(0xFFFFU))
+#define PARADOX_NUMERICS_UINT16_MIN ((uint16_t)(0x0U))
+#define PARADOX_NUMERICS_UINT8_MAX  ((uint8_t)(0xFFU))
+#define PARADOX_NUMERICS_UINT8_MIN  ((uint8_t)(0x0U))
+
+#define PARADOX_NUMERICS_INT64_MAX ((int64_t)(0x7FFFFFFFFFFFFFFF))
+#define PARADOX_NUMERICS_INT64_MIN ((int64_t)(0x8000000000000000))
+#define PARADOX_NUMERICS_INT32_MAX ((int32_t)(0x7FFFFFFF))
+#define PARADOX_NUMERICS_INT32_MIN ((int32_t)(0x80000000))
+#define PARADOX_NUMERICS_INT16_MAX ((int16_t)(0x7FFF))
+#define PARADOX_NUMERICS_INT16_MIN ((int16_t)(0x8000))
+#define PARADOX_NUMERICS_INT8_MAX  ((int8_t)(0x7F))
+#define PARADOX_NUMERICS_INT8_MIN  ((int8_t)(0x80))
+
+_Static_assert(PARADOX_NUMERICS_UINT64_MAX == 18446744073709551615, "PARADOX_NUMERICS_UINT64_MAX expected value of largest unsigned 64 bit integer.");
+_Static_assert(PARADOX_NUMERICS_UINT64_MIN == 0,                    "PARADOX_NUMERICS_UINT64_MIN expected value of smallest unsigned 64 bit integer.");
+_Static_assert(PARADOX_NUMERICS_UINT32_MAX == 4294967295,           "PARADOX_NUMERICS_UINT32_MAX expected value of largest unsigned 32 bit integer.");
+_Static_assert(PARADOX_NUMERICS_UINT32_MIN == 0,                    "PARADOX_NUMERICS_UINT32_MIN expected value of smallest unsigned 32 bit integer.");
+_Static_assert(PARADOX_NUMERICS_UINT16_MAX == 65535,                "PARADOX_NUMERICS_UINT16_MAX expected value of largest unsigned 16 bit integer.");
+_Static_assert(PARADOX_NUMERICS_UINT16_MIN == 0,                    "PARADOX_NUMERICS_UINT16_MIN expected value of smallest unsigned 16 bit integer.");
+_Static_assert(PARADOX_NUMERICS_UINT8_MAX  == 255,                  "PARADOX_NUMERICS_UINT8_MAX expected value of largest unsigned 8 bit integer.");
+_Static_assert(PARADOX_NUMERICS_UINT8_MIN  == 0,                    "PARADOX_NUMERICS_UINT8_MIN expected value of smallest unsigned 8 bit integer.");
+
+_Static_assert(PARADOX_NUMERICS_INT64_MAX == 9223372036854775807,  "PARADOX_NUMERICS_INT64_MAX expected value of largest signed 64 bit integer.");
+_Static_assert(PARADOX_NUMERICS_INT64_MIN == -9223372036854775808, "PARADOX_NUMERICS_INT64_MIN expected value of smallest signed 64 bit integer.");
+_Static_assert(PARADOX_NUMERICS_INT32_MAX == 2147483647,           "PARADOX_NUMERICS_INT32_MAX expected value of largest signed 32 bit integer.");
+_Static_assert(PARADOX_NUMERICS_INT32_MIN == -2147483648,          "PARADOX_NUMERICS_INT32_MIN expected value of smallest signed 32 bit integer.");
+_Static_assert(PARADOX_NUMERICS_INT16_MAX == 32767,                "PARADOX_NUMERICS_INT16_MAX expected value of largest signed 16 bit integer.");
+_Static_assert(PARADOX_NUMERICS_INT16_MIN == -32768,               "PARADOX_NUMERICS_INT16_MIN expected value of smallest signed 16 bit integer.");
+_Static_assert(PARADOX_NUMERICS_INT8_MAX  == 127,                  "PARADOX_NUMERICS_INT8_MAX expected value of largest signed 8 bit integer.");
+_Static_assert(PARADOX_NUMERICS_INT8_MIN  == -128,                 "PARADOX_NUMERICS_INT8_MIN expected value of smallest signed 8 bit integer.");
+
+/** Converts the errno of enum paradox_numerics_errno_t to it's string literal equivalent.*/
+PARADOX_PLATFORM_API paradox_str_t paradox_numerics_errno_to_string(paradox_numerics_errno_t err_code);
+
 // *** Group 1: Numerical Text <-> Integral Type *** //
 
 // ** Section 1.A: Hexadecimal Conversions ** //
