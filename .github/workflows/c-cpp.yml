@@ -13,11 +13,14 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       
-    - name: C/C++ Unit Testing Build
-      run: make build_tests
+    - name: C Unit Testing Build
+      run: make gcc-debug-c-tests
+
+    - name: C++ Unit Testing Build
+      run: make gcc-debug-cpp-tests
       
     - name: C Unit Testing Run
-      run: ${{github.workspace}}/build/paradox-platform-c-unit-tests/Debug/c_unit_tests
+      run: ${{github.workspace}}/build/gcc-c/paradox-platform-unit-tests/debug/paradox-platform-unit-tests
 
     - name: C++ Unit Testing Run
-      run: ${{github.workspace}}/build/paradox-platform-cpp-unit-tests/Debug/cpp_unit_tests
+      run: ${{github.workspace}}/build/gcc-cpp/paradox-platform-unit-tests/debug/paradox-platform-unit-tests
