@@ -1,1 +1,8 @@
+#ifndef OPEN_SOURCE_C_HEADER_PARADOX_PLATFORM_NUMERICS_1D_TESTS
+#define OPEN_SOURCE_C_HEADER_PARADOX_PLATFORM_NUMERICS_1D_TESTS
+
 #include <paradox-platform/numerics.h>
+
+void paradox_platform_tests_numerics_1_d_ternary_conversions(void);
+
+#endif

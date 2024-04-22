@@ -1,6 +1,11 @@
 #include <paradox-platform/defines.h>
 #include <numerics_1_a_tests.h>
+#include <numerics_1_b_tests.h>
+#include <numerics_1_c_tests.h>
+#include <numerics_1_d_tests.h>
+#include <numerics_1_e_tests.h>
 #include <unit_tests.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 void setUp(void)

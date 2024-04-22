@@ -31,7 +31,7 @@
         "PARADOX_NUMERICS_BAD_"#bad_type);\
     {\
         paradox_uint##int_sz##_t codepoint;\
-        paradox_numerics_errno_t err_code = paradox_hex_to_uint##int_sz(##hex_str, (len), ##cp);\
+        paradox_numerics_errno_t err_code = paradox_hex_to_uint##int_sz(hex_str, (len), cp);\
         sprintf(exp_buf, "retval = PARADOX_NUMERICS_BAD_"#bad_type);\
         sprintf(res_buf, "retval = %s", paradox_numerics_errno_to_string(err_code));\
         paradox_unit_tests_set_expected_and_result(exp_buf, res_buf);\

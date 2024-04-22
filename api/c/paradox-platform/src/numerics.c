@@ -35,21 +35,51 @@ PARADOX_PLATFORM_API paradox_str_t paradox_numerics_errno_to_string(paradox_nume
 // }
 
 void skip_hex_prefix(paradox_str_t* hex) { if((*hex)[0] == '0' && ((*hex)[1] == 'x' || (*hex)[1] == 'X')) *hex = (*hex) + 2; }
-paradox_numerics_errno_t paradox_hex_to_uint(paradox_str_t hex, const size_t len, paradox_uint64_t* codepoint, const size_t max_len)
+paradox_numerics_errno_t paradox_hex_to_uint(paradox_str_t hex, const size_t len, void* codepoint, const size_t max_len)
 {
     if(hex == NULL || codepoint == NULL) return PARADOX_NUMERICS_BAD_PTR;
     if( len <= 0 || max_len < len) return PARADOX_NUMERICS_BAD_SIZE;
     skip_hex_prefix(&hex);
-    *codepoint = 0x0;
+    switch(max_len)
+    {
+    case 16:
+        *((paradox_uint64_t*)(codepoint)) = 0x0;
+        break;
+    case 8:
+        *((paradox_uint32_t*)(codepoint)) = 0x0;
+        break;
+    case 4:
+        *((paradox_uint16_t*)(codepoint)) = 0x0;
+        break;
+    case 2:
+        *((paradox_uint8_t*)(codepoint)) = 0x0;
+        break;
+    }
     for(size_t i = 0; i < len; ++i)
     {  
-        *codepoint <<= 4;
         paradox_str_char_t c = hex[i];
         if(!c) return PARADOX_NUMERICS_BAD_SIZE;
         if(!paradox_uchar32_ishex(c)) return PARADOX_NUMERICS_BAD_HEX;
-        if('0' <= c && c <= '9') *codepoint += (paradox_uint64_t)(c - '0');
-        else if('a' <= c && c <= 'f') *codepoint += (paradox_uint64_t)(c - 'a' + 10);
-        else if('A' <= c && c <= 'F') *codepoint += (paradox_uint64_t)(c - 'A' + 10);
+        paradox_uint8_t digit;
+        if('0' <= c && c <= '9') digit = (paradox_uint8_t)(c - '0');
+        else if('a' <= c && c <= 'f') digit = (paradox_uint8_t)(c - 'a' + 10);
+        else if('A' <= c && c <= 'F') digit = (paradox_uint8_t)(c - 'A' + 10);
+
+        switch(max_len)
+        {
+        case 16:
+            *((paradox_uint64_t*)(codepoint)) = (*((paradox_uint64_t*)(codepoint)) << 4) + digit;
+            break;
+        case 8:
+            *((paradox_uint32_t*)(codepoint)) = (*((paradox_uint32_t*)(codepoint)) << 4) + digit;
+            break;
+        case 4:
+            *((paradox_uint16_t*)(codepoint)) = (*((paradox_uint16_t*)(codepoint)) << 4) + digit;
+            break;
+        case 2:
+            *((paradox_uint8_t*)(codepoint)) = (*((paradox_uint8_t*)(codepoint)) << 4) + digit;
+            break;
+        }
     }
     return PARADOX_NUMERICS_SUCCESS;
 }
