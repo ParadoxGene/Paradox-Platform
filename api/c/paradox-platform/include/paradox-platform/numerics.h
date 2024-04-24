@@ -17,42 +17,6 @@ typedef enum paradox_numerics_errno_t
     PARADOX_NUMERICS_BAD_PTR
 } paradox_numerics_errno_t;
 
-#define PARADOX_NUMERICS_UINT64_MAX ((uint64_t)(0xFFFFFFFFFFFFFFFFULL))
-#define PARADOX_NUMERICS_UINT64_MIN ((uint64_t)(0x0ULL))
-#define PARADOX_NUMERICS_UINT32_MAX ((uint32_t)(0xFFFFFFFFUL))
-#define PARADOX_NUMERICS_UINT32_MIN ((uint32_t)(0x0UL))
-#define PARADOX_NUMERICS_UINT16_MAX ((uint16_t)(0xFFFFU))
-#define PARADOX_NUMERICS_UINT16_MIN ((uint16_t)(0x0U))
-#define PARADOX_NUMERICS_UINT8_MAX  ((uint8_t)(0xFFU))
-#define PARADOX_NUMERICS_UINT8_MIN  ((uint8_t)(0x0U))
-
-#define PARADOX_NUMERICS_INT64_MAX ((int64_t)(0x7FFFFFFFFFFFFFFF))
-#define PARADOX_NUMERICS_INT64_MIN ((int64_t)(0x8000000000000000))
-#define PARADOX_NUMERICS_INT32_MAX ((int32_t)(0x7FFFFFFF))
-#define PARADOX_NUMERICS_INT32_MIN ((int32_t)(0x80000000))
-#define PARADOX_NUMERICS_INT16_MAX ((int16_t)(0x7FFF))
-#define PARADOX_NUMERICS_INT16_MIN ((int16_t)(0x8000))
-#define PARADOX_NUMERICS_INT8_MAX  ((int8_t)(0x7F))
-#define PARADOX_NUMERICS_INT8_MIN  ((int8_t)(0x80))
-
-_Static_assert(PARADOX_NUMERICS_UINT64_MAX == (uint64_t)(18446744073709551615ULL), "PARADOX_NUMERICS_UINT64_MAX expected value of largest unsigned 64 bit integer.");
-_Static_assert(PARADOX_NUMERICS_UINT64_MIN == (uint64_t)(0),                       "PARADOX_NUMERICS_UINT64_MIN expected value of smallest unsigned 64 bit integer.");
-_Static_assert(PARADOX_NUMERICS_UINT32_MAX == (uint32_t)(4294967295),              "PARADOX_NUMERICS_UINT32_MAX expected value of largest unsigned 32 bit integer.");
-_Static_assert(PARADOX_NUMERICS_UINT32_MIN == (uint32_t)(0),                       "PARADOX_NUMERICS_UINT32_MIN expected value of smallest unsigned 32 bit integer.");
-_Static_assert(PARADOX_NUMERICS_UINT16_MAX == (uint16_t)(65535),                   "PARADOX_NUMERICS_UINT16_MAX expected value of largest unsigned 16 bit integer.");
-_Static_assert(PARADOX_NUMERICS_UINT16_MIN == (uint16_t)(0),                       "PARADOX_NUMERICS_UINT16_MIN expected value of smallest unsigned 16 bit integer.");
-_Static_assert(PARADOX_NUMERICS_UINT8_MAX  == (uint8_t)(255),                      "PARADOX_NUMERICS_UINT8_MAX expected value of largest unsigned 8 bit integer.");
-_Static_assert(PARADOX_NUMERICS_UINT8_MIN  == (uint8_t)(0),                        "PARADOX_NUMERICS_UINT8_MIN expected value of smallest unsigned 8 bit integer.");
-
-_Static_assert(PARADOX_NUMERICS_INT64_MAX == (int64_t)(9223372036854775807),  "PARADOX_NUMERICS_INT64_MAX expected value of largest signed 64 bit integer.");
-_Static_assert(PARADOX_NUMERICS_INT64_MIN == (int64_t)(-9223372036854775807-1), "PARADOX_NUMERICS_INT64_MIN expected value of smallest signed 64 bit integer.");
-_Static_assert(PARADOX_NUMERICS_INT32_MAX == (int32_t)(2147483647),             "PARADOX_NUMERICS_INT32_MAX expected value of largest signed 32 bit integer.");
-_Static_assert(PARADOX_NUMERICS_INT32_MIN == (int32_t)(-2147483647-1),            "PARADOX_NUMERICS_INT32_MIN expected value of smallest signed 32 bit integer.");
-_Static_assert(PARADOX_NUMERICS_INT16_MAX == (int16_t)(32767),                  "PARADOX_NUMERICS_INT16_MAX expected value of largest signed 16 bit integer.");
-_Static_assert(PARADOX_NUMERICS_INT16_MIN == (int16_t)(-32767-1),                 "PARADOX_NUMERICS_INT16_MIN expected value of smallest signed 16 bit integer.");
-_Static_assert(PARADOX_NUMERICS_INT8_MAX  == (int8_t)(127),                    "PARADOX_NUMERICS_INT8_MAX expected value of largest signed 8 bit integer.");
-_Static_assert(PARADOX_NUMERICS_INT8_MIN  == (int8_t)(-127-1),                   "PARADOX_NUMERICS_INT8_MIN expected value of smallest signed 8 bit integer.");
-
 /** Converts the errno of enum paradox_numerics_errno_t to it's string literal equivalent.*/
 PARADOX_PLATFORM_API paradox_str_t paradox_numerics_errno_to_string(paradox_numerics_errno_t err_code);
 
@@ -62,6 +26,8 @@ PARADOX_PLATFORM_API paradox_str_t paradox_numerics_errno_to_string(paradox_nume
 
 /**
  * Converts the c-string of a nonnegative hexadecimal number to an unsigned 64-bit integer.
+ * @note Conversions start from left-to-right until len amount of hex are accumulated or null character found.
+ * @note Trailing 0s are skipped.
  * @param hex the c-string of a nonnegative hexadecimal number.
  * @param len the length of the c-string (excluding the null character).
  * @param codepoint the unsigned 64-bit integer is stored here.
@@ -75,6 +41,7 @@ PARADOX_PLATFORM_API paradox_numerics_errno_t paradox_hex_to_uint64(paradox_str_
 
 /**
  * Converts the unsigned 64-bit integer to an allocated null-terminated c-string of a nonnegative hexadecimal number.
+ * @note The allocated null-terminated c-string must be free'd when done using.
  * @param codepoint the unsigned 64-bit integer.
  * @param hex the c-string of a nonnegative hexadecimal number will be stored here.
  * @param len the length of c-string (excluding the null character) will be stored here.

@@ -5,42 +5,29 @@ PARADOX_PLATFORM_API paradox_str_t paradox_numerics_errno_to_string(paradox_nume
 {
     switch(err_code)
     {
-        case PARADOX_NUMERICS_SUCCESS: return "PARADOX_NUMERICS_SUCCESS";
-        case PARADOX_NUMERICS_BAD_SIZE: return "PARADOX_NUMERICS_BAD_SIZE";
-        case PARADOX_NUMERICS_BAD_HEX: return "PARADOX_NUMERICS_BAD_HEX";
-        case PARADOX_NUMERICS_BAD_DEC: return "PARADOX_NUMERICS_BAD_DEC";
-        case PARADOX_NUMERICS_BAD_OCT: return "PARADOX_NUMERICS_BAD_OCT";
-        case PARADOX_NUMERICS_BAD_TER: return "PARADOX_NUMERICS_BAD_TER";
-        case PARADOX_NUMERICS_BAD_BIN: return "PARADOX_NUMERICS_BAD_BIN";
+        case PARADOX_NUMERICS_SUCCESS:   return "PARADOX_NUMERICS_SUCCESS";
+        case PARADOX_NUMERICS_BAD_SIZE:  return "PARADOX_NUMERICS_BAD_SIZE";
+        case PARADOX_NUMERICS_BAD_HEX:   return "PARADOX_NUMERICS_BAD_HEX";
+        case PARADOX_NUMERICS_BAD_DEC:   return "PARADOX_NUMERICS_BAD_DEC";
+        case PARADOX_NUMERICS_BAD_OCT:   return "PARADOX_NUMERICS_BAD_OCT";
+        case PARADOX_NUMERICS_BAD_TER:   return "PARADOX_NUMERICS_BAD_TER";
+        case PARADOX_NUMERICS_BAD_BIN:   return "PARADOX_NUMERICS_BAD_BIN";
+        case PARADOX_NUMERICS_BAD_PTR:   return "PARADOX_NUMERICS_BAD_PTR";
         case PARADOX_NUMERICS_BAD_ALLOC: return "PARADOX_NUMERICS_BAD_ALLOC";
-        case PARADOX_NUMERICS_BAD_PTR: return "PARADOX_NUMERICS_BAD_PTR";
         default: return "";
     }
 }
 
-// PARADOX_PLATFORM_API paradox_bool8_t paradox_hex_to_uint32(paradox_str_t hex, const size_t len, paradox_uint32_t* code)
-// {
-//     if(!code) return PARADOX_FALSE;
-//     *code = 0;
-//     for(size_t i = 0; i < len; ++i)
-//     {
-//         *code *= 16;
-//         paradox_char8_t c = hex[i];
-//         if('0' <= c && c <= '9') *code += (paradox_uint8_t)(c - '0');
-//         else if('a' <= c && c <= 'f') *code += (paradox_uint8_t)(c - 'a' + 10);
-//         else if('A' <= c && c <= 'F') *code += (paradox_uint8_t)(c - 'A' + 10);
-//         else return PARADOX_FALSE;
-//     }
-//     return PARADOX_TRUE;
-// }
-
 void skip_hex_prefix(paradox_str_t* hex) { if((*hex)[0] == '0' && ((*hex)[1] == 'x' || (*hex)[1] == 'X')) *hex = (*hex) + 2; }
-paradox_numerics_errno_t paradox_hex_to_uint(paradox_str_t hex, const size_t len, void* codepoint, const size_t max_len)
+paradox_numerics_errno_t paradox_hex_to_uint(paradox_str_t hex, size_t len, void* codepoint, const size_t max_len)
 {
+    // error-checking
+    // null check
     if(hex == NULL || codepoint == NULL) return PARADOX_NUMERICS_BAD_PTR;
-    if( len <= 0 || max_len < len) return PARADOX_NUMERICS_BAD_SIZE;
-    skip_hex_prefix(&hex);
-    switch(max_len)
+    // len check
+    if( len <= 0) return PARADOX_NUMERICS_BAD_SIZE;
+    skip_hex_prefix(&hex); // ignores case insensitive "0x" sequence
+    switch(max_len) // type-generic hacky stuff
     {
     case 16:
         *((paradox_uint64_t*)(codepoint)) = 0x0;
@@ -55,17 +42,29 @@ paradox_numerics_errno_t paradox_hex_to_uint(paradox_str_t hex, const size_t len
         *((paradox_uint8_t*)(codepoint)) = 0x0;
         break;
     }
-    for(size_t i = 0; i < len; ++i)
+
+    paradox_bool8_t leading_zero = PARADOX_TRUE;
+    size_t index = 0;
+    size_t curr_len = 0;
+    while(curr_len < len && curr_len <= max_len)
     {  
-        paradox_str_char_t c = hex[i];
-        if(!c) return PARADOX_NUMERICS_BAD_SIZE;
+        paradox_str_char_t c = hex[index++];
+        if(!c) return PARADOX_NUMERICS_SUCCESS; // stops accumulating on null character
+        // non-hex character found
         if(!paradox_uchar32_ishex(c)) return PARADOX_NUMERICS_BAD_HEX;
+        // grabs next digit
         paradox_uint8_t digit;
         if('0' <= c && c <= '9') digit = (paradox_uint8_t)(c - '0');
         else if('a' <= c && c <= 'f') digit = (paradox_uint8_t)(c - 'a' + 10);
         else if('A' <= c && c <= 'F') digit = (paradox_uint8_t)(c - 'A' + 10);
+        // skips leading zeros
+        if(leading_zero && !digit) continue;
+        leading_zero = PARADOX_FALSE;
+        // bad size error if too many hex letters are being accumulated
+        if(max_len < ++curr_len) return PARADOX_NUMERICS_BAD_SIZE; 
 
-        switch(max_len)
+        // multiplies curr value by radix then add next digit
+        switch(max_len) // type-generic hacky stuff
         {
         case 16:
             *((paradox_uint64_t*)(codepoint)) = (*((paradox_uint64_t*)(codepoint)) << 4) + digit;
@@ -81,6 +80,7 @@ paradox_numerics_errno_t paradox_hex_to_uint(paradox_str_t hex, const size_t len
             break;
         }
     }
+    // hexadecimal string successfully converted.
     return PARADOX_NUMERICS_SUCCESS;
 }
 
