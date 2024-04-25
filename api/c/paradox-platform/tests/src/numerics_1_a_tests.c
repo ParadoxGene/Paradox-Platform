@@ -3,6 +3,7 @@
 
 #include <unit_tests.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 
 #define PARADOX_UNIT_TEST_NUMERICS_HEX_TO_UINT_GOOD(int_sz, hex_seq, len)\
@@ -77,7 +78,7 @@
         sprintf(exp_buf, "retval=PARADOX_NUMERICS_SUCCESS && hex=\"%s\" && len=%llu", (hex_str), (len_num));\
         sprintf(res_buf, "retval=%s && hex=\"%s\" && len=%llu", paradox_numerics_errno_to_string(err_code), hex, len);\
         paradox_unit_tests_set_expected_and_result(exp_buf, res_buf);\
-        if(err_code == PARADOX_NUMERICS_SUCCESS && hex == (hex_str) && len == (len_num))\
+        if(err_code == PARADOX_NUMERICS_SUCCESS && !strcmp(hex, hex_str) && len == (len_num))\
             paradox_unit_tests_passed();\
         else paradox_unit_tests_failed();\
         if(hex) free(hex);\
