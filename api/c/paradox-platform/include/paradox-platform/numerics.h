@@ -27,7 +27,7 @@ PARADOX_PLATFORM_API paradox_str_t paradox_numerics_errno_to_string(paradox_nume
 /**
  * Converts the c-string of a nonnegative hexadecimal number to an unsigned 64-bit integer.
  * @note Conversions start from left-to-right until len amount of hex are accumulated or null character found.
- * @note Trailing 0s are skipped.
+ * @note Trailing 0s are not skipped.
  * @param hex the c-string of a nonnegative hexadecimal number.
  * @param len the length of the c-string (excluding the null character).
  * @param codepoint the unsigned 64-bit integer is stored here.
