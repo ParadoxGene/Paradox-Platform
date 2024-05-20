@@ -31,7 +31,7 @@ paradox_bool8_t has_neg_sign(paradox_str_t* base_str)
 void skip_hex_prefix(paradox_str_t* hex) { if('0' == (*hex)[0] && ('x' == (*hex)[1] || 'X' == (*hex)[1])) *hex = (*hex) + 2; }
 void skip_oct_prefix(paradox_str_t* oct) { if('0' == (*oct)[0] && ('o' == (*oct)[1] || 'O' == (*oct)[1])) *oct = (*oct) + 2; }
 
-#define paradox_generic_integral_type_to_radix_string(definition)\
+#define paradox_generic_radix_string_to_integral_type(definition)\
     PARADOX_PLATFORM_API paradox_numerics_errno_t paradox_hex_to_uint64(paradox_str_t base_str, const size_t len, paradox_uint64_t* codepoint)\
     { const paradox_uint8_t radix = 16; const paradox_uint8_t bit_sz = 64; paradox_uint64_t code_cap; const paradox_bool8_t allow_neg_sign = PARADOX_FALSE; definition; }\
     PARADOX_PLATFORM_API paradox_numerics_errno_t paradox_hex_to_uint32(paradox_str_t base_str, const size_t len, paradox_uint32_t* codepoint)\
@@ -114,7 +114,7 @@ void skip_oct_prefix(paradox_str_t* oct) { if('0' == (*oct)[0] && ('o' == (*oct)
     PARADOX_PLATFORM_API paradox_numerics_errno_t paradox_bin_to_int8(paradox_str_t base_str, const size_t len, paradox_int8_t* codepoint)\
     { const paradox_uint8_t radix = 2; const paradox_uint8_t bit_sz = 8; paradox_int8_t code_cap; const paradox_bool8_t allow_neg_sign = PARADOX_TRUE; definition; }
 
-paradox_generic_integral_type_to_radix_string(
+paradox_generic_radix_string_to_integral_type(
 {
     // error-checking | null check
     if(NULL == base_str || NULL == codepoint) return PARADOX_NUMERICS_BAD_PTR;
@@ -127,105 +127,27 @@ paradox_generic_integral_type_to_radix_string(
 
     size_t index = 0;
     size_t curr_len = 0;
-
-    switch(radix)
+    
+    switch(bit_sz)
     {
-    case 16: {
-        switch(bit_sz)
-        {
-        case 64: {
-            if(allow_neg_sign) {}
-            else code_cap = 1152921504606846975ULL;
-            break;
-        }
-        case 32: {
-            if(allow_neg_sign) {}
-            else code_cap = 268435455ULL;
-            break;
-        }
-        case 16: {
-            if(allow_neg_sign) {}
-            else code_cap = 4095ULL;
-            break;
-        }
-        case 8: {
-            if(allow_neg_sign) {}
-            else code_cap = 15ULL;
-            break;
-        }
-        };
+    case 64: {
+        if(allow_neg_sign) code_cap = (neg_sign ? -576460752303423488LL : 576460752303423487LL);
+        else code_cap = 1152921504606846975ULL;
         break;
     }
-    case 10: {
-        switch(bit_sz)
-        {
-        case 64: {
-            break;
-        }
-        case 32: {
-            break;
-        }
-        case 16: {
-            break;
-        }
-        case 8: {
-            break;
-        }
-        };
+    case 32: {
+        if(allow_neg_sign) code_cap = (neg_sign ? -134217728LL : 134217727LL);
+        else code_cap = 268435455ULL;
+        break;
+    }
+    case 16: {
+        if(allow_neg_sign) code_cap = (neg_sign ? -2048LL : 2047LL);
+        else code_cap = 4095ULL;
         break;
     }
     case 8: {
-        switch(bit_sz)
-        {
-        case 64: {
-            break;
-        }
-        case 32: {
-            break;
-        }
-        case 16: {
-            break;
-        }
-        case 8: {
-            break;
-        }
-        };
-        break;
-    }
-    case 3: {
-        switch(bit_sz)
-        {
-        case 64: {
-            break;
-        }
-        case 32: {
-            break;
-        }
-        case 16: {
-            break;
-        }
-        case 8: {
-            break;
-        }
-        };
-        break;
-    }
-    case 2: {
-        switch(bit_sz)
-        {
-        case 64: {
-            break;
-        }
-        case 32: {
-            break;
-        }
-        case 16: {
-            break;
-        }
-        case 8: {
-            break;
-        }
-        };
+        if(allow_neg_sign) code_cap = (neg_sign ? -8LL : 7LL);
+        else code_cap = 15ULL;
         break;
     }
     };
@@ -293,7 +215,7 @@ paradox_generic_integral_type_to_radix_string(
     return PARADOX_NUMERICS_SUCCESS;
 });
 
-#define paradox_generic_radix_string_to_integral_type(definition)\
+#define paradox_generic_integral_type_to_radix_string(definition)\
     PARADOX_PLATFORM_API paradox_numerics_errno_t paradox_uint64_to_hex(const paradox_uint64_t codepoint, paradox_str_t* base_str, size_t* len)\
     { const paradox_uint8_t radix = 16; paradox_uint64_t code = codepoint; definition; }\
     PARADOX_PLATFORM_API paradox_numerics_errno_t paradox_uint32_to_hex(const paradox_uint32_t codepoint, paradox_str_t* base_str, size_t* len)\
@@ -376,7 +298,7 @@ paradox_generic_integral_type_to_radix_string(
     PARADOX_PLATFORM_API paradox_numerics_errno_t paradox_int8_to_bin(const paradox_int8_t codepoint, paradox_str_t* base_str, size_t* len)\
     { const paradox_uint8_t radix = 2; paradox_int8_t code = codepoint; definition; }
 
-paradox_generic_radix_string_to_integral_type(
+paradox_generic_integral_type_to_radix_string(
 {
     // error-checking | null check
     if(NULL == base_str || NULL == len) return PARADOX_NUMERICS_BAD_PTR;
