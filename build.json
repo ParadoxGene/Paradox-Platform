@@ -1,0 +1,16 @@
+{ 
+  "name" : "paradox-platform",
+
+  "build" :
+  [
+    {
+      "name" : "paradox-platform",
+      "type" : "library",
+      "sources" : [{ "repo" : "paradox-platform", "library" : "paradox-platform" , "directory" : "paradox-platform" }],
+      "includes" :
+      [
+        { "repo" : "paradox-platform", "library" : "paradox-platform" }
+      ]
+    }
+  ]
+}
