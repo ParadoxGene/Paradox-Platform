@@ -5,7 +5,7 @@
   [
     {
       "name" : "paradox-platform",
-      "type" : "library",
+      "type" : "paradox-library",
       "sources" : [{ "repo" : "paradox-platform", "library" : "paradox-platform" , "directory" : "paradox-platform" }],
       "includes" :
       [
