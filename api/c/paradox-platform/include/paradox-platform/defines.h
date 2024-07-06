@@ -47,5 +47,6 @@
 #define PARADOX_FALSE 0
 
 #include <paradox-platform/sized_types.h>
+#include <paradox-platform/common.h>
 
 #endif
