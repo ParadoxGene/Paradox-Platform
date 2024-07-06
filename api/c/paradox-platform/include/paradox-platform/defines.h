@@ -26,12 +26,12 @@
 #endif
 
 #if defined(_WIN32)
-    #define PARADOX_WINDOWS
+    #define PARADOX_WINDOWS_BUILD
 #elif defined(__linux__)
     #if defined(__ANDROID__)
-        #define PARADOX_ANDROID
+        #define PARADOX_ANDROID_BUILD
     #else
-        #define PARADOX_LINUX
+        #define PARADOX_LINUX_BUILD
     #endif
 #endif
 
