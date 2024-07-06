@@ -27,11 +27,14 @@
 
 #if defined(_WIN32)
     #define PARADOX_WINDOWS_BUILD
+    #define PARADOX_DESKTOP_BUILD
 #elif defined(__linux__)
     #if defined(__ANDROID__)
         #define PARADOX_ANDROID_BUILD
+        #define PARADOX_MOBILE_BUILD
     #else
         #define PARADOX_LINUX_BUILD
+        #define PARADOX_DESKTOP_BUILD
     #endif
 #endif
 
