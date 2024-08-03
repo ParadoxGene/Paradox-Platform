@@ -77,7 +77,7 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_ishex(const paradox_uchar32
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_isunicode(const paradox_uchar32_t c)
 { return c < 0x10FFFF; }
 
-PARADOX_PLATFORM_API paradox_uint32_t paradox_utf8_to_code(paradox_cstr_t utf8, size_t* num_bytes)
+PARADOX_PLATFORM_API paradox_uint32_t paradox_utf8_to_codepoint(paradox_cstr_t utf8, size_t* num_bytes)
 {
     if(!utf8) return PARADOX_UTF8_ERR_CODE;    
 	paradox_uchar32_t c0 = (paradox_uchar32_t)utf8[0];
