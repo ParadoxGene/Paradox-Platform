@@ -10,6 +10,201 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_lower_eq(const paradox_ucha
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_lower_eq(const paradox_uchar32_t c1, const paradox_uchar32_t c2)
 { return (c1 < 0x100 && c2 < 0x100) ? (tolower((int)c1) == tolower((int)c2)) : (c1 == c2); }
 
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isdigit(const paradox_char8_t c)
+{ return (c < 0x100) ? (isdigit((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isalpha(const paradox_char8_t c)
+{ return (c < 0x100) ? (isalpha((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isalnum(const paradox_char8_t c)
+{ return (c < 0x100) ? (isalnum((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isbinary(const paradox_char8_t c)
+{
+    switch(c) {
+    case '0':
+    case '1': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isternary(const paradox_char8_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isoctal(const paradox_char8_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_ishex(const paradox_char8_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case 'a':
+    case 'b':
+    case 'c':
+    case 'd':
+    case 'e':
+    case 'f':
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'D':
+    case 'E':
+    case 'F': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isdigit(const paradox_uchar8_t c)
+{ return (c < 0x100) ? (isdigit((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isalpha(const paradox_uchar8_t c)
+{ return (c < 0x100) ? (isalpha((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isalnum(const paradox_uchar8_t c)
+{ return (c < 0x100) ? (isalnum((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isbinary(const paradox_uchar8_t c)
+{
+    switch(c) {
+    case '0':
+    case '1': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isternary(const paradox_uchar8_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isoctal(const paradox_uchar8_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_ishex(const paradox_uchar8_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case 'a':
+    case 'b':
+    case 'c':
+    case 'd':
+    case 'e':
+    case 'f':
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'D':
+    case 'E':
+    case 'F': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isdigit(const paradox_uchar16_t c)
+{ return (c < 0x100) ? (isdigit((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isalpha(const paradox_uchar16_t c)
+{ return (c < 0x100) ? (isalpha((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isalnum(const paradox_uchar16_t c)
+{ return (c < 0x100) ? (isalnum((int)c) != 0) : PARADOX_FALSE; }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isbinary(const paradox_uchar16_t c)
+{
+    switch(c) {
+    case '0':
+    case '1': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isternary(const paradox_uchar16_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isoctal(const paradox_uchar16_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_ishex(const paradox_uchar16_t c)
+{
+    switch(c) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case 'a':
+    case 'b':
+    case 'c':
+    case 'd':
+    case 'e':
+    case 'f':
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'D':
+    case 'E':
+    case 'F': return PARADOX_TRUE;
+    default : return PARADOX_FALSE; }   
+}
+
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_isdigit(const paradox_uchar32_t c)
 { return (c < 0x100) ? (isdigit((int)c) != 0) : PARADOX_FALSE; }
 

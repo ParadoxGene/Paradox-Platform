@@ -9,6 +9,30 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_lower_eq(const paradox_uchar
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_lower_eq(const paradox_uchar16_t c1, const paradox_uchar16_t c2);
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_lower_eq(const paradox_uchar32_t c1, const paradox_uchar32_t c2);
 
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isdigit(const paradox_char8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isalpha(const paradox_char8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isalnum(const paradox_char8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isbinary(const paradox_char8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isternary(const paradox_char8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_isoctal(const paradox_char8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_char8_ishex(const paradox_char8_t c);
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isdigit(const paradox_uchar8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isalpha(const paradox_uchar8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isalnum(const paradox_uchar8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isbinary(const paradox_uchar8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isternary(const paradox_uchar8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_isoctal(const paradox_uchar8_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar8_ishex(const paradox_uchar8_t c);
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isdigit(const paradox_uchar16_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isalpha(const paradox_uchar16_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isalnum(const paradox_uchar16_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isbinary(const paradox_uchar16_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isternary(const paradox_uchar16_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_isoctal(const paradox_uchar16_t c);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar16_ishex(const paradox_uchar16_t c);
+
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_isdigit(const paradox_uchar32_t c);
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_isalpha(const paradox_uchar32_t c);
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_isalnum(const paradox_uchar32_t c);
