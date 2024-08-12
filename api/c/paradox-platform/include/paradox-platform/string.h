@@ -17,16 +17,17 @@ typedef enum paradox_string_errno_t
 typedef struct paradox_string
 {
     size_t capacity;
-    size_t len;
+    size_t size;
     paradox_str_t data;
 } paradox_string;
 
-PARADOX_PLATFORM_API paradox_string* paradox_create_string(paradox_str_t data);
+PARADOX_PLATFORM_API paradox_string* paradox_create_string();
+PARADOX_PLATFORM_API paradox_string* paradox_create_string_from_str(paradox_str_t data, const size_t size);
 PARADOX_PLATFORM_API void paradox_clear_string(paradox_string* str);
 PARADOX_PLATFORM_API void paradox_destroy_string(paradox_string* str);
 
-PARADOX_PLATFORM_API paradox_string_errno_t paradox_append_str_to_string(paradox_string* str, paradox_str_t data);
+PARADOX_PLATFORM_API paradox_string_errno_t paradox_append_str_to_string(paradox_string* str, paradox_str_t data, const size_t size);
 PARADOX_PLATFORM_API paradox_string_errno_t paradox_append_string_to_string(paradox_string* dest, paradox_string* src);
-PARADOX_PLATFORM_API paradox_string_errno_t paradox_remove_from_string(paradox_string* str, const size_t pos, const size_t len);
+PARADOX_PLATFORM_API paradox_string_errno_t paradox_remove_from_string(paradox_string* str, const size_t pos, const size_t size);
 
 #endif
