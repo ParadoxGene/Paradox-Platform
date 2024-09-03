@@ -43,5 +43,6 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_ishex(const paradox_uchar32
 PARADOX_PLATFORM_API paradox_bool8_t paradox_uchar32_isunicode(const paradox_uchar32_t c);
 
 PARADOX_PLATFORM_API paradox_uint32_t paradox_utf8_to_codepoint(paradox_cstr_t utf8, size_t* num_bytes);
+PARADOX_PLATFORM_API paradox_bool8_t paradox_codepoint_to_utf8(const paradox_uint32_t code, paradox_str_t utf8);
 
 #endif

@@ -316,3 +316,35 @@ PARADOX_PLATFORM_API paradox_uint32_t paradox_utf8_to_codepoint(paradox_cstr_t u
 	if(num_bytes) *num_bytes = 0;
 	return PARADOX_UTF8_ERR_CODE;
 }
+
+PARADOX_PLATFORM_API paradox_bool8_t paradox_codepoint_to_utf8(const paradox_uint32_t code, paradox_str_t utf8)
+{
+	if(code <= 0x007F)
+    {
+		utf8[0] = (paradox_str_char_t)(code);
+        utf8[1] = '\0';
+    }
+	else if(code <= 0x07FF)
+	{
+        utf8[0] = (paradox_str_char_t)(0xC0 + (0x1F & (code >> 6)));
+		utf8[1] = (paradox_str_char_t)(0x80 + (0x3F & code));
+        utf8[2] = '\0';
+	}
+	else if(code <= 0xFFFF)
+	{
+		utf8[0] = (paradox_str_char_t)(0xE0 + (0x0F & (code >> 12)));
+		utf8[1] = (paradox_str_char_t)(0x80 + (0x3F & (code >> 6)));
+		utf8[2] = (paradox_str_char_t)(0x80 + (0x3F & code));
+        utf8[3] = '\0';
+	}
+	else if(code <= 0x10FFFF)
+	{
+		utf8[0] = (paradox_str_char_t)(0xF0 + (0x07 & (code >> 18)));
+		utf8[1] = (paradox_str_char_t)(0x80 + (0x3F & (code >> 12)));
+		utf8[2] = (paradox_str_char_t)(0x80 + (0x3F & (code >> 6)));
+		utf8[3] = (paradox_str_char_t)(0x80 + (0x3F & code));
+        utf8[4] = '\0';
+	}
+    else return PARADOX_FALSE;
+    return PARADOX_TRUE;
+}
