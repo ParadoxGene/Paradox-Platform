@@ -65,7 +65,7 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_copy_string(paradox_string* dest, c
 PARADOX_PLATFORM_API paradox_bool8_t paradox_append_string(paradox_string* dest, const paradox_string* src) {
     if(!dest || !src) return PARADOX_FALSE;
     size_t new_capacity = paradox_calculate_string_capacity(dest->size + src->size + 1);
-    if(new_capacity > dest->capacity) {
+    if(new_capacity != dest->capacity) {
         paradox_str_t new_data = realloc(dest->data, new_capacity);
         if(!new_data) return PARADOX_FALSE;
         dest->data = new_data;
@@ -80,7 +80,7 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_append_string(paradox_string* dest,
 PARADOX_PLATFORM_API paradox_bool8_t paradox_append_str2string(paradox_string* dest, const paradox_str_t src, const size_t size) {
     if(!dest || !src || !size) return PARADOX_FALSE;
     size_t new_capacity = paradox_calculate_string_capacity(dest->size + size + 1);
-    if(new_capacity > dest->capacity) {
+    if(new_capacity != dest->capacity) {
         paradox_str_t new_data = realloc(dest->data, new_capacity);
         if(!new_data) return PARADOX_FALSE;
         dest->data = new_data;
@@ -95,7 +95,7 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_append_str2string(paradox_string* d
 PARADOX_PLATFORM_API paradox_bool8_t paradox_insert_string(paradox_string* dest, const paradox_string* src, const size_t pos) {
     if(!dest || !src || pos > dest->size) return PARADOX_FALSE;
     size_t new_capacity = paradox_calculate_string_capacity(dest->size + src->size + 1);
-    if(new_capacity > dest->capacity) {
+    if(new_capacity != dest->capacity) {
         paradox_str_t new_data = realloc(dest->data, new_capacity);
         if(!new_data) return PARADOX_FALSE;
         dest->data = new_data;
@@ -118,7 +118,7 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_insert_string(paradox_string* dest,
 PARADOX_PLATFORM_API paradox_bool8_t paradox_insert_str2string(paradox_string* dest, const paradox_str_t src, const size_t size, const size_t pos) {
     if(!dest || !src || pos > dest->size) return PARADOX_FALSE;
     size_t new_capacity = paradox_calculate_string_capacity(dest->size + size + 1);
-    if(new_capacity > dest->capacity) {
+    if(new_capacity != dest->capacity) {
         paradox_str_t new_data = realloc(dest->data, new_capacity);
         if(!new_data) return PARADOX_FALSE;
         dest->data = new_data;
@@ -139,16 +139,22 @@ PARADOX_PLATFORM_API paradox_bool8_t paradox_insert_str2string(paradox_string* d
 }
 
 PARADOX_PLATFORM_API paradox_bool8_t paradox_remove_string(paradox_string* dest, const size_t pos, const size_t count) {
-    if(!dest || !count || dest->size < pos + count) return PARADOX_FALSE;
-    memcpy(dest->data + pos, dest->data + pos + count, (pos + count) - dest->size + 1);
-    dest->size -= count;
-    size_t new_capacity = paradox_calculate_string_capacity(dest->size + 1);
-    if(new_capacity > dest->capacity) {
-        paradox_str_t new_data = realloc(dest->data, new_capacity);
+    if(!dest || !count || pos + count > dest->size) return PARADOX_FALSE;
+
+    const size_t new_capacity = paradox_calculate_string_capacity(dest->size - count + 1);
+    if(new_capacity != dest->capacity) {
+        const size_t left_size = pos;
+        const size_t right_size = dest->size - pos - count;
+        paradox_str_t new_data = malloc(new_capacity);
         if(!new_data) return PARADOX_FALSE;
+        memcpy(new_data, dest->data, left_size);
+        memcpy(new_data + pos, dest->data + pos + count, right_size);
+        free(dest->data);
         dest->data = new_data;
-        dest->capacity = new_capacity;
     }
+    else for(size_t i = pos + count; i <= dest->size; ++i) dest->data[i - count] = dest->data[i];
+    dest->capacity = new_capacity;
+    dest->size -= count;
     return PARADOX_TRUE;
 }
 
